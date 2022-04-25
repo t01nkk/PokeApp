@@ -4,9 +4,9 @@ const router = require('express').Router();
 // const api_url = "https://employeedetails.free.beeceptor.com/my/api/path";
 
 const pokeTypes = require('./Types');
-const pokeRoutes = require('./Pokemons');
+const Pokelist = require('./Pokemons');
 
-router.use('/', pokeRoutes);
+router.use('/', Pokelist);
 router.use('/', pokeTypes);
 // Configurar los routers
 // Ejemplo: router.use('/auth', authRouter);

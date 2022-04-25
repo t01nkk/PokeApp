@@ -11,6 +11,10 @@ module.exports = (sequelize) => {
       primaryKey: true,
       defaultValue: DataTypes.UUIDV4
     },
+    idPoke: {
+      type: DataTypes.INTEGER,
+      autoIncrement: true
+    },
     name: {
       type: DataTypes.STRING,
       allowNull: false,
@@ -33,6 +37,15 @@ module.exports = (sequelize) => {
     },
     weight: {
       type: DataTypes.INTEGER
+    },
+    img: {
+      type: DataTypes.STRING
+    },
+    typeOne: {
+      type: DataTypes.STRING
+    },
+    typeTwo: {
+      type: DataTypes.STRING
     },
   },
     { timestamps: false });
