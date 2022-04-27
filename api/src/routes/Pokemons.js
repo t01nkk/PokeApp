@@ -1,8 +1,9 @@
 const router = require('express').Router();
-const { getPoke, getPokeDb, createNewPoke } = require('../Middlewares/middleware');
+const { getPoke, getPokeDb, createNewPoke, displayPokemonsCards, displayDetail, displayByName } = require('../Middlewares/middleware');
 const { Pokemon } = require('../db');
+const { Op } = require('sequelize');
 
-router.get('/pokemons', async (req, res, next) => {
+router.get('/', async (req, res, next) => {
     try {
         const listapoke = await getPoke();
         const cont = await Pokemon.count();
@@ -15,7 +16,39 @@ router.get('/pokemons', async (req, res, next) => {
     }
 })
 
-router.post('/pokemons', async (req, res, next) => {
+router.get('/pokemons', async (req, res) => {
+    if (req.query.name) {
+        try {
+            let { name } = req.query;
+            let poke = await displayByName(name);
+            res.send(poke);
+        } catch (err) {
+            res.status(404).send({ msg: err.message });
+        }
+    } else {
+        try {
+            const card = await displayPokemonsCards();
+            res.send(card);
+        } catch (err) {
+            res.status(404).send({ msg: err.message });
+        }
+    }
+})
+
+router.get('/pokemons/:id', async (req, res) => {
+    try {
+        let { id } = req.params;
+        let poke = await (displayDetail(id));
+        res.send(poke);
+    } catch (err) {
+        res.status(404).send({ msg: err.message });
+    }
+})
+
+
+
+//CREATE
+router.post('/create', async (req, res) => {
     try {
         const { img, name, typeOne, typeTwo, hp, attack, def, speed, height, weight } = req.body;
         const newPoke = await createNewPoke(img, name, typeOne, typeTwo, hp, attack, def, speed, height, weight);
@@ -24,6 +57,8 @@ router.post('/pokemons', async (req, res, next) => {
         res.status(404).json({ msg: err.message });
     }
 })
+
+router.get('')
 
 
 
