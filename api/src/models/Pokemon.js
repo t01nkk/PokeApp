@@ -5,13 +5,13 @@ module.exports = (sequelize) => {
   // defino el modelo
   // Nombre * Vida Fuerza Defensa Velocidad Altura Peso
   sequelize.define('Pokemon', {
-    // id: {
-    //   type: DataTypes.UUID,
-    //   allowNull: false,
-    //   primaryKey: true,
-    //   defaultValue: DataTypes.UUIDV4
-    // },
     id: {
+      type: DataTypes.UUID,
+      allowNull: false,
+      // primaryKey: true,
+      defaultValue: DataTypes.UUIDV4
+    },
+    idPoke: {
       type: DataTypes.INTEGER,
       autoIncrement: true,
       unique: true,
@@ -43,16 +43,18 @@ module.exports = (sequelize) => {
     img: {
       type: DataTypes.STRING
     },
-    type:
-      DataTypes.ARRAY(DataTypes.STRING)
 
-    // typeOne: {
-    //   type: DataTypes.STRING,
-
-    // },
-    // typeTwo: {
-    //   type: DataTypes.STRING
-    // },
+    typeOne: {
+      type: DataTypes.STRING,
+      allowNull: false
+    },
+    typeTwo: {
+      type: DataTypes.STRING
+    },
+    createdDb: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: false
+    }
   },
     { timestamps: false });
 };

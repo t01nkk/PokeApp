@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const { getPoke, getPokeDb, createNewPoke, displayPokemonsCards, displayDetail, displayByName } = require('../Middlewares/middleware');
+const { getPoke, getPokeDb, createNewPoke, deletePokemon, displayPokemonsCards, displayDetail, displayByName } = require('../Middlewares/middleware');
 const { Pokemon } = require('../db');
 const { Op } = require('sequelize');
 
@@ -45,20 +45,31 @@ router.get('/pokemons/:id', async (req, res) => {
     }
 })
 
-
-
-//CREATE
-router.post('/create', async (req, res) => {
+router.delete('/delete/:id', async (req, res) => {
+    const { id } = req.params;
     try {
-        const { img, name, typeOne, typeTwo, hp, attack, def, speed, height, weight } = req.body;
-        const newPoke = await createNewPoke(img, name, typeOne, typeTwo, hp, attack, def, speed, height, weight);
-        res.status(201).json({ msg: newPoke });
+        const toDelete = await deletePokemon(id);
+        if (toDelete) {
+            await Pokemon.destroy({ where: { idPoke: id } })
+            const update = await Pokemon.findAll();
+            res.json(update);
+        }
     } catch (err) {
-        res.status(404).json({ msg: err.message });
+        res.status(404).json({ msg: err.message })
     }
 })
 
-router.get('')
+router.post('/create', async (req, res) => {
+    try {
+        const { img, name, hp, attack, def, speed, height, weight, typeOne, typeTwo } = req.body;
+        const newPoke = await createNewPoke(img, name, hp, attack, def, speed, height, weight, typeOne, typeTwo);
+        res.status(201).json({ msg: newPoke });
+    } catch (err) {
+        res.status(500).json({ msg: err.message });
+    }
+})
+
+
 
 
 

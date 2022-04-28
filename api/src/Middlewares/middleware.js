@@ -3,13 +3,12 @@ const axios = require('axios');
 const { Op } = require('sequelize');
 
 const getPoke = async () => {
-    const pokemons = await axios('https://pokeapi.co/api/v2/pokemon?offset=0&limit=1');
+    const pokemons = await axios('https://pokeapi.co/api/v2/pokemon?offset=0&limit=3');
     const mapUrl = await pokemons.data.results.map(e => { return e.url })
     var arrayPokemones = [];
     for (var i = 0; i < mapUrl.length; i++) {
         const url = await axios(mapUrl[i])
         arrayPokemones.push({
-            id: url.data.id,
             name: url.data.name,
             height: url.data.height,
             weight: url.data.weight,
@@ -18,8 +17,8 @@ const getPoke = async () => {
             speed: url.data.stats.find(e => e.stat.name === 'speed').base_stat,
             attack: url.data.stats.find(e => e.stat.name === 'attack').base_stat,
             img: url.data.sprites.other["official-artwork"].front_default,
-            // type: [url.data.types[0].type.name, url.data.types[1] ? url.data.types[1].type.name : null]
-            // typeTwo: url.data.types[1] ? url.data.types[1].type.name : null,
+            typeOne: url.data.types[0].type.name,
+            typeTwo: url.data.types[1] ? url.data.types[1].type.name : null,
         }
         );
     }
@@ -27,15 +26,7 @@ const getPoke = async () => {
 }
 
 const getPokeDb = async function () {
-    return await Pokemon.findAll(
-        {
-            attribute: ["name"],
-            include: {
-                model: Types,
-            },
-            raw: true,
-            nest: true
-        });
+    return await Pokemon.findAll();
 }
 
 const getTypes = async () => {
@@ -45,51 +36,37 @@ const getTypes = async () => {
         arrTypes.push({
             id: getting.data.results[i].id,
             name: getting.data.results[i].name,
-            // typeTwo: getting.data.results[i].name
         })
     }
     return arrTypes;
 }
 
 const getTypesDb = async function () {
-    return await Types.findAll({
-        include: {
-            model: Pokemon,
-        },
-        raw: true,
-        nest: true
-    });
+    return await Types.findAll();
 }
 
-const createNewPoke = async function (img, name, typeOne, typeTwo, hp, attack, def, speed, height, weight) {
+const createNewPoke = async function (img, name, hp, attack, def, speed, height, weight, typeOne, typeTwo) {
+    if (!typeOne) throw new Error('type Value Missing');
+    if (!img) throw new Error('imgValue Missing');
+    if (!name) throw new Error('nameValue Missing');
+    if (!hp) throw new Error('hpValue Missing');
+    if (!attack) throw new Error('attackValue Missing');
+    if (!def) throw new Error('defValue Missing');
+    if (!speed) throw new Error('speedValue Missing');
+    if (!height) throw new Error('height Missing');
+    if (!weight) throw new Error('weight Value Missing');
 
-    if (!img) throw new Error('Value Missing');
-    if (!name) throw new Error('Value Missing');
-    // if (!typeOne) throw new Error('Value Missing');
-    // if (!typeTwo) throw new Error('Value Missing');
-    if (!hp) throw new Error('Value Missing');
-    if (!attack) throw new Error('Value Missing');
-    if (!def) throw new Error('Value Missing');
-    if (!speed) throw new Error('Value Missing');
-    if (!height) throw new Error('Value Missing');
-    if (!weight) throw new Error('Value Missing');
+    if (typeof name !== 'string') throw new Error('The name must be a string Incorrect');
+    if (typeof img !== 'string' && img.includes('https://')) throw new Error('The image path is Incorrect ');
+    if (typeof typeOne !== 'string') throw new Error('First Type value is Incorrect '); //type two deja de ser checkeado
+    if (typeof hp !== 'number') throw new Error('Health Value is Incorrect ');
+    if (typeof attack !== 'number') throw new Error('Attack is Incorrect ');
+    if (typeof def !== 'number') throw new Error('Defense is Incorrect ');
+    if (typeof speed !== 'number') throw new Error('Speed is Incorrect ');
+    if (typeof height !== 'number') throw new Error('Height is Incorrect ');
+    if (typeof weight !== 'number') throw new Error('Weight is Incorrect ');
 
-    if (typeof name !== 'string') throw new Error('Incorrect Value');
-    if (typeof img !== 'string' && img.includes('https://')) throw new Error('Incorrect Value');
-    // if (typeof typeOne !== 'string') throw new Error('Incorrect Value');
-    // if (typeof typeTwo !== 'string') throw new Error('Incorrect Value');
-    if (typeof hp !== 'number') throw new Error('Incorrect Value');
-    if (typeof attack !== 'number') throw new Error('Incorrect Value');
-    if (typeof def !== 'number') throw new Error('Incorrect Value');
-    if (typeof speed !== 'number') throw new Error('Incorrect Value');
-    if (typeof height !== 'number') throw new Error('Incorrect Value');
-    if (typeof weight !== 'number') throw new Error('Incorrect Value');
-
-    // const existe = await Pokemon.findOne({ where: { name: name } })
-
-    if (await Pokemon.findOne({ where: { name: name } })) throw new Error('This pokemon already exists.');
-
-    await Pokemon.create({
+    const resultado = await Pokemon.create({
         img: img,
         name: name,
         hp: hp,
@@ -98,15 +75,27 @@ const createNewPoke = async function (img, name, typeOne, typeTwo, hp, attack, d
         speed: speed,
         height: height,
         weight: weight,
+        typeOne: typeOne,
+        typeTwo: typeTwo ? typeTwo : null,
+        createdDb: true
     });
-    if (await Pokemon.findOne({
+    const relation = await Types.findOne({
         where: {
-            name: name
+            name: typeOne
         }
     })
-    ) return 'Pokemon created Succesfuly.';
+    const relation2 = await Types.findOne({
+        where: {
+            name: typeTwo
+        }
+    })
 
-    throw new Error('Theres been an error, please try again.');
+
+    await resultado.addType(relation);
+    await resultado.addType(relation2);
+
+
+    return 'Pokemon created Succesfuly.';
 }
 
 const displayPokemonsCards = async function (offset, numberOfCards) {
@@ -114,6 +103,7 @@ const displayPokemonsCards = async function (offset, numberOfCards) {
         attributes: {
             exclude: [
                 "id",
+                "idPoke",
                 "hp",
                 "attack",
                 "defense",
@@ -131,7 +121,7 @@ const displayDetail = async function (id) {
     // if (!id) throw new Error('id no ingresado');
     const poke = await Pokemon.findOne({
         where: {
-            id: id
+            idPoke: id
         },
         attributes: {
             exclude: [
@@ -167,6 +157,12 @@ const displayByName = async function (name) {
     return variable;
 }
 
+
+const deletePokemon = async function (id) {
+    const deleting = await Pokemon.findOne({ where: { createdDb: true, idPoke: id } })
+    return deleting;
+}
+
 // const typeFilterOne=()=>{
 
 // }
@@ -174,5 +170,5 @@ const displayByName = async function (name) {
 
 
 
-module.exports = { getPoke, getPokeDb, getTypes, getTypesDb, createNewPoke, displayPokemonsCards, displayDetail, displayByName };
+module.exports = { deletePokemon, getPoke, getPokeDb, getTypes, getTypesDb, createNewPoke, displayPokemonsCards, displayDetail, displayByName };
 
