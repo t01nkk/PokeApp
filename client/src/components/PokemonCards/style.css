@@ -1,0 +1,26 @@
+.Cartita{
+    display:flex;
+    align-items: center;
+    justify-content: space-around;
+    position: relative;
+    flex-direction: column;
+}
+
+.cardPosition{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    
+}
+
+.PokeImages{
+    position: absolute;
+    width: 80%;
+    left: 20%;
+    top: 8%;
+}
+
+
+
+/* box-sizing: border-box;
+display: block; */

@@ -3,7 +3,7 @@ const axios = require('axios');
 const { Op } = require('sequelize');
 
 const getPoke = async () => {
-    const pokemons = await axios('https://pokeapi.co/api/v2/pokemon?offset=0&limit=3');
+    const pokemons = await axios('https://pokeapi.co/api/v2/pokemon?offset=0&limit=40');
     const mapUrl = await pokemons.data.results.map(e => { return e.url })
     var arrayPokemones = [];
     for (var i = 0; i < mapUrl.length; i++) {
@@ -16,7 +16,9 @@ const getPoke = async () => {
             defense: url.data.stats.find(e => e.stat.name === 'defense').base_stat,
             speed: url.data.stats.find(e => e.stat.name === 'speed').base_stat,
             attack: url.data.stats.find(e => e.stat.name === 'attack').base_stat,
-            img: url.data.sprites.other["official-artwork"].front_default,
+            // img: url.data.sprites.other["official-artwork"].front_default,
+            // sprites{versions{generation-v: {black-white: {animated: {"front_default":
+            img: url.data.sprites.versions['generation-v']['black-white'].animated.front_default,
             typeOne: url.data.types[0].type.name,
             typeTwo: url.data.types[1] ? url.data.types[1].type.name : null,
         }
@@ -46,8 +48,14 @@ const getTypesDb = async function () {
 }
 
 const createNewPoke = async function (img, name, hp, attack, def, speed, height, weight, typeOne, typeTwo) {
+    const exists = await Pokemon.findOne({
+        where: {
+            name: name
+        }
+    })
+    if (exists) throw new Error('This Pokemon already exists');
     if (!typeOne) throw new Error('type Value Missing');
-    if (!img) throw new Error('imgValue Missing');
+    if (!img) throw new Error('Image Value Missing');
     if (!name) throw new Error('nameValue Missing');
     if (!hp) throw new Error('hpValue Missing');
     if (!attack) throw new Error('attackValue Missing');
@@ -160,7 +168,10 @@ const displayByName = async function (name) {
 
 const deletePokemon = async function (id) {
     const deleting = await Pokemon.findOne({ where: { createdDb: true, idPoke: id } })
-    return deleting;
+    if (deleting) {
+        if (deleting.dataValues.createdDb) return deleting;
+    }
+    else throw new Error(`The Pokemon id:${id} could not be found or the pokemon can not be deleted`);
 }
 
 // const typeFilterOne=()=>{

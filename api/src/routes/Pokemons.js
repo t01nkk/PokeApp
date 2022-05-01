@@ -1,39 +1,95 @@
 const router = require('express').Router();
-const { getPoke, getPokeDb, createNewPoke, deletePokemon, displayPokemonsCards, displayDetail, displayByName } = require('../Middlewares/middleware');
+
+const {
+    getPoke,
+    getPokeDb,
+    createNewPoke,
+    deletePokemon,
+    displayPokemonsCards,
+    displayDetail,
+    displayByName
+} = require('../Middlewares/middleware');
+
 const { Pokemon } = require('../db');
 const { Op } = require('sequelize');
 
-router.get('/', async (req, res, next) => {
+
+router.get('/pokemon', async (req, res, next) => {
     try {
-        const listapoke = await getPoke();
         const cont = await Pokemon.count();
+        const listapoke = await getPoke();
         let infoHold;
-        if (cont === 0) infoHold = await Pokemon.bulkCreate(listapoke);
+        if (cont === 0) { infoHold = await Pokemon.bulkCreate(listapoke); }
         infoHold = await getPokeDb();
         res.send(infoHold);
     } catch (err) {
         next({ msg: err.message });
     }
+
 })
 
-router.get('/pokemons', async (req, res) => {
-    if (req.query.name) {
-        try {
-            let { name } = req.query;
-            let poke = await displayByName(name);
-            res.send(poke);
-        } catch (err) {
-            res.status(404).send({ msg: err.message });
-        }
-    } else {
-        try {
-            const card = await displayPokemonsCards();
-            res.send(card);
-        } catch (err) {
-            res.status(404).send({ msg: err.message });
-        }
-    }
-})
+// router.get('/pokemon', async (req, res, next) => {
+//     if (req.query.name) {
+//         try {
+//             let { name } = req.query;
+//             let poke = await displayByName(name);
+//             res.send(poke);
+//         } catch (err) {
+//             res.status(404).send({ msg: err.message });
+//         }
+
+//     }
+// })
+// router.get('/pokemons', async (req, res) => {
+//     if (req.query.name) {
+//         try {
+//             let { name } = req.query;
+//             let poke = await displayByName(name);
+//             res.send(poke);
+//         } catch (err) {
+//             res.status(404).send({ msg: err.message });
+//         }
+//     } else {
+//         try {
+//             const card = await displayPokemonsCards();
+//             res.send(card);
+//         } catch (err) {
+//             res.status(404).send({ msg: err.message });
+//         }
+//     }
+// })
+// router.get('/', async (req, res, next) => {
+//     try {
+//         const listapoke = await getPoke();
+//         const cont = await Pokemon.count();
+//         let infoHold;
+//         if (cont === 0) infoHold = await Pokemon.bulkCreate(listapoke);
+//         infoHold = await getPokeDb();
+//         res.send(infoHold);
+//     } catch (err) {
+//         next({ msg: err.message });
+//     }
+
+// })
+
+// router.get('/pokemons', async (req, res) => {
+//     if (req.query.name) {
+//         try {
+//             let { name } = req.query;
+//             let poke = await displayByName(name);
+//             res.send(poke);
+//         } catch (err) {
+//             res.status(404).send({ msg: err.message });
+//         }
+//     } else {
+//         try {
+//             const card = await displayPokemonsCards();
+//             res.send(card);
+//         } catch (err) {
+//             res.status(404).send({ msg: err.message });
+//         }
+//     }
+// })
 
 router.get('/pokemons/:id', async (req, res) => {
     try {

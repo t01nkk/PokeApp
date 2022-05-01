@@ -1,0 +1,19 @@
+.button{
+    background-color:rgba(153, 0, 255, 0.507) ;
+    font-weight: 700;
+    text-transform: capitalize;
+    padding: 0.5rem 1rem;
+    margin: 0 1rem;
+    border: solid 2px thick;
+    border-radius: 10px;
+    cursor:pointer;
+    transition:all 0.25s;
+    animation: fadeIn 3s ease 3s fowards;
+    opacity: 1;
+}
+
+.button:hover{
+    box-shadow: 0 0 2px 1px rgb(86, 11, 156);
+    background-color: rgba(76, 26, 109, 0.507) ;
+    color: red
+}
