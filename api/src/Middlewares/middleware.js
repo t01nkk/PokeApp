@@ -1,185 +1,122 @@
 const { Pokemon, Types } = require('../db')
 const axios = require('axios');
-const { Op } = require('sequelize');
 
+//CARGA LA TABLA DE POKEMONS
+
+// const getPoke =  () => {
+//     const pokemons = fetch('https://pokeapi.co/api/v2/pokemon?offset=0&limit=100')
+//         .then(res=>json())
+//         .then(json=>json.results)
+//     console.log(pokemons,"THIS IS POKEMONS")
+//     const mapUrl = pokemons.map(e => {return fetch(e.url)})
+//     const finallyPokemons=Promise.all(mapUrl)
+//     var arrayPokemones = [];
+//     for (var i = 0; i < mapUrl.length; i++) {
+//         const url = await axios(mapUrl[i])
+//         arrayPokemones.push({
+//             idPoke: url.data.id,
+//             name: url.data.name,
+//             height: url.data.height,
+//             weight: url.data.weight,
+//             hp: url.data.stats.find(e => e.stat.name === 'hp').base_stat,
+//             attack: url.data.stats.find(e => e.stat.name === 'attack').base_stat,
+//             defense: url.data.stats.find(e => e.stat.name === 'defense').base_stat,
+//             speed: url.data.stats.find(e => e.stat.name === 'speed').base_stat,
+//             types: url.data.types.map(e => e = { name: e.type.name }),
+//             // img: url.data.sprites.versions['generation-v']['black-white'].animated.front_default,
+//             img: url.data.sprites.other["official-artwork"].front_default,
+//         }
+//         );
+//     }
+//     return arrayPokemones;
+// }
 const getPoke = async () => {
-    const pokemons = await axios('https://pokeapi.co/api/v2/pokemon?offset=0&limit=40');
+    const pokemons = await fetch('https://pokeapi.co/api/v2/pokemon?offset=0&limit=100');
     const mapUrl = await pokemons.data.results.map(e => { return e.url })
     var arrayPokemones = [];
     for (var i = 0; i < mapUrl.length; i++) {
         const url = await axios(mapUrl[i])
         arrayPokemones.push({
+            idPoke: url.data.id,
             name: url.data.name,
             height: url.data.height,
             weight: url.data.weight,
             hp: url.data.stats.find(e => e.stat.name === 'hp').base_stat,
+            attack: url.data.stats.find(e => e.stat.name === 'attack').base_stat,
             defense: url.data.stats.find(e => e.stat.name === 'defense').base_stat,
             speed: url.data.stats.find(e => e.stat.name === 'speed').base_stat,
-            attack: url.data.stats.find(e => e.stat.name === 'attack').base_stat,
-            // img: url.data.sprites.other["official-artwork"].front_default,
-            // sprites{versions{generation-v: {black-white: {animated: {"front_default":
-            img: url.data.sprites.versions['generation-v']['black-white'].animated.front_default,
-            typeOne: url.data.types[0].type.name,
-            typeTwo: url.data.types[1] ? url.data.types[1].type.name : null,
+            types: url.data.types.map(e => e = { name: e.type.name }),
+            // img: url.data.sprites.versions['generation-v']['black-white'].animated.front_default,
+            img: url.data.sprites.other["official-artwork"].front_default,
         }
         );
     }
     return arrayPokemones;
 }
 
-const getPokeDb = async function () {
-    return await Pokemon.findAll();
-}
+const createFromApi = async function () {
+    const pokemonsInDb = await Pokemon.findAll({ where: { createdDb: true } }) //agarro todos los creados por usuario
+    const count = await Pokemon.count(); //cuento cuantos hay en la base de datos
+    if (pokemonsInDb.length === count) { // comparo, si son iguales, quiere decir que en la base de datos solo hay pokemones creados por el usuario
+        const apiPoke = await getPoke();
+        // console.log("ACA ESTA EL POKE", apiPoke[apiPoke.length - 1]);
+        for (var i = 0; i < apiPoke.length; i++) {
+            let newPoke = await Pokemon.create({
+                idPoke: apiPoke[i].idPoke,
+                name: apiPoke[i].name,
+                height: apiPoke[i].height,
+                weight: apiPoke[i].weight,
+                hp: apiPoke[i].hp,
+                attack: apiPoke[i].attack,
+                defense: apiPoke[i].defense,
+                speed: apiPoke[i].speed,
+                img: apiPoke[i].img
+            })
+            let typeDb = await Types.findAll({ where: { name: apiPoke[i].types[0].name } })
+            newPoke.addType(typeDb);
+            // console.log(typeDb, i);
+            if (apiPoke[i].types[1]) {
+                let typeDb2 = await Types.findAll({ where: { name: apiPoke[i].types[1].name } })
+                newPoke.addType(typeDb2);
+                // console.log(typeDb2, i, 'ACA ESTA INDEX');
+            }
+        }
 
-const getTypes = async () => {
-    let getting = await axios('https://pokeapi.co/api/v2/type');
-    arrTypes = []
-    for (var i = 0; i < getting.data.results.length; i++) {
-        arrTypes.push({
-            id: getting.data.results[i].id,
-            name: getting.data.results[i].name,
-        })
     }
-    return arrTypes;
 }
 
-const getTypesDb = async function () {
-    return await Types.findAll();
-}
-
-const createNewPoke = async function (img, name, hp, attack, def, speed, height, weight, typeOne, typeTwo) {
-    const exists = await Pokemon.findOne({
-        where: {
-            name: name
-        }
-    })
-    if (exists) throw new Error('This Pokemon already exists');
-    if (!typeOne) throw new Error('type Value Missing');
-    if (!img) throw new Error('Image Value Missing');
-    if (!name) throw new Error('nameValue Missing');
-    if (!hp) throw new Error('hpValue Missing');
-    if (!attack) throw new Error('attackValue Missing');
-    if (!def) throw new Error('defValue Missing');
-    if (!speed) throw new Error('speedValue Missing');
-    if (!height) throw new Error('height Missing');
-    if (!weight) throw new Error('weight Value Missing');
-
-    if (typeof name !== 'string') throw new Error('The name must be a string Incorrect');
-    if (typeof img !== 'string' && img.includes('https://')) throw new Error('The image path is Incorrect ');
-    if (typeof typeOne !== 'string') throw new Error('First Type value is Incorrect '); //type two deja de ser checkeado
-    if (typeof hp !== 'number') throw new Error('Health Value is Incorrect ');
-    if (typeof attack !== 'number') throw new Error('Attack is Incorrect ');
-    if (typeof def !== 'number') throw new Error('Defense is Incorrect ');
-    if (typeof speed !== 'number') throw new Error('Speed is Incorrect ');
-    if (typeof height !== 'number') throw new Error('Height is Incorrect ');
-    if (typeof weight !== 'number') throw new Error('Weight is Incorrect ');
-
-    const resultado = await Pokemon.create({
-        img: img,
-        name: name,
-        hp: hp,
-        attack: attack,
-        def: def,
-        speed: speed,
-        height: height,
-        weight: weight,
-        typeOne: typeOne,
-        typeTwo: typeTwo ? typeTwo : null,
-        createdDb: true
-    });
-    const relation = await Types.findOne({
-        where: {
-            name: typeOne
-        }
-    })
-    const relation2 = await Types.findOne({
-        where: {
-            name: typeTwo
-        }
-    })
-
-
-    await resultado.addType(relation);
-    await resultado.addType(relation2);
-
-
-    return 'Pokemon created Succesfuly.';
-}
-
-const displayPokemonsCards = async function (offset, numberOfCards) {
-    const card = await Pokemon.findAll({
-        attributes: {
-            exclude: [
-                "id",
-                "idPoke",
-                "hp",
-                "attack",
-                "defense",
-                "speed",
-                "height",
-                "weight"
-            ]
-
-        }
-    });
-    return card
-}
-
-const displayDetail = async function (id) {
-    // if (!id) throw new Error('id no ingresado');
-    const poke = await Pokemon.findOne({
-        where: {
-            idPoke: id
-        },
-        attributes: {
-            exclude: [
-                "id"
-            ]
-        }, include: {
+const getPokeDb = async function () {
+    return await Pokemon.findAll({
+        include: {
             model: Types,
-            attribute: ['name', 'id'],
+            attributes: ['name'],
             through: {
-                attribute: []
+                attributes: [],
             }
         }
-    },
-    );
-    return poke
+    });
 }
 
-const displayByName = async function (name) {
-    // if (!id) throw new Error('id no ingresado');
-    name = name.toLowerCase();
-    if (!name) throw new Error('Ingrese un valor');
-    let variable = await Pokemon.findOne({
-        where: {
-            name: { [Op.iLike]: `%${name}%` },
-        }, include: {
-            model: Types,
-            attribute: ['name', 'id'],
-            through: {
-                attribute: []
-            }
-        }
-    })
-    return variable;
+const getAllPoke = async () => {
+    const createAll = await createFromApi()
+    const dbPoke = await getPokeDb();
+    return dbPoke;
 }
-
+// BORRA POKEMON
 
 const deletePokemon = async function (id) {
     const deleting = await Pokemon.findOne({ where: { createdDb: true, idPoke: id } })
     if (deleting) {
         if (deleting.dataValues.createdDb) return deleting;
     }
-    else throw new Error(`The Pokemon id:${id} could not be found or the pokemon can not be deleted`);
+    else throw new Error(`The Pokemon ID:"${id}" could not be found or the pokemon can not be deleted`);
 }
 
-// const typeFilterOne=()=>{
-
-// }
 
 
 
-
-module.exports = { deletePokemon, getPoke, getPokeDb, getTypes, getTypesDb, createNewPoke, displayPokemonsCards, displayDetail, displayByName };
+module.exports = {
+    deletePokemon,
+    getAllPoke
+};
 

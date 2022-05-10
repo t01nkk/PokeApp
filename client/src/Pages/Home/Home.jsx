@@ -1,146 +1,152 @@
 import React from "react";
+import { useSelector, useDispatch } from "react-redux";
 import { useEffect, useState } from "react";
-import Pokemons from "../../components/PokemonCards/index";
 import Pagination from "../../components/Pagination/Pagination";
-import { Link } from "react-router-dom";
+import {
+  fetchPokemons,
+  fetchTypes,
+  filterPokemonsByType,
+  filterByCreated,
+  OrderingByName,
+  OrderingByAttack
+} from "../../redux/actions/actionTypes";
+import Card from "../../components/Card";
 import "./styles.css";
-import { useDispatch } from "react-redux";
-import { showPokemons } from "../../redux/actions/actionTypes";
-import axios from "axios";
-// import imagen from "../resources/charmander-cute.gif";
 
 export default function Home() {
   const dispatch = useDispatch();
-  const [pokemons, setPokemons] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const allPokes = useSelector((state) => state.pokemons);
+  const allTypes = useSelector((state) => state.types);
   const [currentPage, setCurrentPage] = useState(1);
   const [pokemonsPerPage] = useState(10);
-
-  useEffect(() => {
-    const fetchPokemons = async () => {
-      setLoading(true);
-      const res = await axios("http://localHost:3001/pokemon");
-      setPokemons(res.data);
-      setLoading(false);
-    };
-    fetchPokemons();
-  }, []);
-
   const indexOfLastPokemon = currentPage * pokemonsPerPage;
   const indexOfFirstPokemon = indexOfLastPokemon - pokemonsPerPage;
-  const currentPokemon = pokemons.slice(
+  const [order, setOrder] = useState("");
+
+  useEffect(() => {
+    //POKEMONS
+    dispatch(fetchPokemons());
+  }, [dispatch]);
+
+  useEffect(() => {
+    //TYPES
+    dispatch(fetchTypes());
+  }, [dispatch]);
+
+  function handleClick(e) {
+    dispatch(fetchPokemons());
+  }
+
+  const currentPokemons = allPokes.slice(
     indexOfFirstPokemon,
     indexOfLastPokemon
   );
 
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
+  //FILTER STATUS
+  function handleFilterStatus(event) {
+    dispatch(filterPokemonsByType(event.target.value));
+  }
+
+  //FILTER CREATE
+  function handleFilterCreated(event) {
+    dispatch(filterByCreated(event.target.value));
+  }
+
+  //ORDER NAME
+  function handleOrder(event) {
+    event.preventDefault();
+    dispatch(OrderingByName(event.target.value));
+    setCurrentPage(1);
+    setOrder(`Order ${event.target.value}`);
+  }
+
+  function handleOrderAttack(event) {
+    event.preventDefault();
+    dispatch(OrderingByAttack(event.target.value));
+    setCurrentPage(1);
+    setOrder(`Ordered ${event.target.value}`);
+  }
+
+
   return (
     <div>
-      <Pokemons
-        pokemons={currentPokemon}
-        loading={loading}
-        // className="tabienNoMePegues"
-      ></Pokemons>
-      <Pagination
-        pokemonsPerPage={pokemonsPerPage}
-        totalPokemons={pokemons.length}
-        paginate={paginate}
-      />
+      <div className="titulo">
+        <h1>Pokemon</h1>
+      </div>
+      <div>
+        <button
+          className="realodButton"
+          onClick={(e) => {
+            handleClick(e);
+          }}
+        >
+          Reload Pokemons
+        </button>
+        <div className="filters">
+          <div>
+            <label>Order by name</label>
+            <select onChange={(e) => handleOrder(e)} name="Alphabetical Order">
+              <option value="Any" hidden={true}>Default</option>
+              <option value="A-Z">Order A-Z</option>
+              <option value="Z-A">Order Z-A</option>
+            </select>
+          </div>
+
+          <div>
+            <label>Order by attack</label>
+            <select onChange={(e) => handleOrderAttack(e)} name="Order by attack">
+              <option value="Any" hidden={true}>Default</option>
+              <option value="Attack +">Attack +</option>
+              <option value="Attack -">Attack -</option>
+            </select>
+          </div>
+
+          <div>
+            <label>Created</label>
+            <select
+              onChange={(e) => handleFilterCreated(e)}
+              name="Filter by Pokemon Created by you"
+            >
+              <option value="All" hidden={true}>All </option>
+              <option value="Created">Created </option>
+              <option value="Pokemon">Not created</option>
+            </select>
+          </div>
+          <div>
+            <label>Filter by Type</label>
+            <select
+              onChange={(e) => handleFilterStatus(e)}
+              name="Filter by Pokemon Type"
+            >
+              <option value="All" hidden={true}>All </option>
+              {allTypes.map((type) => {
+                return <option value={type.name}>{type.name}</option>;
+              })}
+            </select>
+          </div>
+        </div>
+
+        <div className="pokePosition">
+          {currentPokemons.length ?
+            currentPokemons?.map((pokemon) => {
+              return (
+                <div>
+                  <Card pokemon={pokemon} key={pokemon.id} />
+                </div>
+              );
+            }) : <h1>Nothin' to show, you can create your pokemon <a href="/create" style={{ textDecoration: 'none', color: 'red' }}>here</a>!</h1>}
+        </div>
+
+        <div>
+          <Pagination
+            pokemonsPerPage={pokemonsPerPage}
+            totalPokemons={allPokes.length}
+            paginate={paginate}
+          />
+        </div>
+      </div>
     </div>
   );
 }
-// export default function Home() {
-//   const dispatch = useDispatch();
-
-//   useEffect(async () => {
-//     debugger;
-//     await dispatch(showPokemons());
-//     console.log(gottenPokemons);
-//     nextPage();
-//   }, [dispatch]);
-
-//   const gottenPokemons = useSelector((state) => state.pokemons);
-//   // console.log(gottenPokemons);
-//   var arr = [];
-
-//   function Paginado(p) {
-//     for (var i = 0; i < Math.floor(gottenPokemons.length / 10); i++) {
-//       let init = 0;
-//       let end = 9;
-//       const leftSlice = gottenPokemons.slice(init, end);
-//       arr.push(leftSlice);
-//       init += 10;
-//       end += 10;
-//       return arr[p];
-//     }
-//   }
-
-//   var pagina = 1;
-//   var pokemonArr;
-//   function nextPage() {
-//     pagina++;
-//     pokemonArr = Paginado(pagina);
-//   }
-
-//   function lastPage() {
-//     pagina--;
-//     Paginado(pagina);
-//   }
-//   console.log(pokemonArr);
-
-//   return (
-//     <div>
-//       <button className="button">
-//         <Link to={"/"} className="Link">
-//           Back To the top!
-//         </Link>
-//       </button>
-//       <button>
-//         <Link to={"/create"}>Create A Pokemon!</Link>
-//       </button>
-//       <div className="tabienNoMePegues">
-//         {/* {gottenPokemons.length ? (
-//           gottenPokemons.map((pokemons) => (
-//             <Card
-//               key={pokemons.idPoke}
-//               name={pokemons.name}
-//               image={pokemons.img}
-//               typeOne={pokemons.typeOne}
-//               typeTwo={pokemons.typeTwo}
-//             />
-//           ))
-//         ) : (
-//           <h1>Loading..</h1>
-//         )} */}
-//         {pokemonArr && pokemonArr.length ? (
-//           pokemonArr.map((pokemons) => (
-//             <Card
-//               key={pokemons.idPoke}
-//               name={pokemons.name}
-//               image={pokemons.img}
-//               typeOne={pokemons.typeOne}
-//               typeTwo={pokemons.typeTwo}
-//             />
-//           ))
-//         ) : (
-//           <h1>Loading..</h1>
-//         )}
-//       </div>
-//       {/* <button onClick={nextPage()}>Siguiente Página</button>
-//       <button onClick={nextPage()}>{pagina}</button>;
-//       <button onClick={nextPage()}>Pagina Anterior</button> */}
-//     </div>
-//   );
-// }
-
-// const fetchPoke = async () => {
-//   const foundPoke = await axios.get("http://localHost:3001/pokemons");
-//   setPokemons(foundPoke.data);
-// };
-// // console.log(pokemons);
-// const dispatch = useDispatch();
-// useEffect(() => {
-//   dispatch(loadDb());
-//   // dispatch(showPokemons());
-// }, [dispatch]);

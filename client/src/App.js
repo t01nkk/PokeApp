@@ -3,25 +3,20 @@ import React from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 import Home from './Pages/Home/Home'
 import LandingPage from './Pages/Landing/LandingPage'
-import Create from './Pages/Create';
+import Form from './components/Form';
+import Details from './components/Details';
+import { Navbar } from './components/NavBar';
 function App() {
+
+
   return (
-    // <BrowserRouter>
-    //   <Routes>
-    //     <Route exact path={'/'} component={Home} />
-    //   </Routes>
-    // </BrowserRouter>
     <Router>
+      <Navbar />
       <Switch>
-        <Route path='/' exact>
-          <LandingPage />
-        </Route>
-        <Route path="/pokemons" >
-          <Home />
-        </Route>
-        <Route>
-          <Create />
-        </Route>
+        <Route exact path='/' component={LandingPage} />
+        <Route exact path='/pokemons' component={Home} />
+        <Route path='/create' component={Form} />
+        <Route path='/pokemons/:id' component={Details} />
       </Switch>
     </Router>
   );

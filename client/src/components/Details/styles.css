@@ -1,0 +1,11 @@
+.Details {
+    display: flex;
+    justify-content: center;
+    flex-direction: column-reverse;
+}
+
+.DetailImage {
+    display: flex;
+    justify-content: center;
+    max-width: 50%;
+}

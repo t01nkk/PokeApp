@@ -8,14 +8,13 @@ module.exports = (sequelize) => {
     id: {
       type: DataTypes.UUID,
       allowNull: false,
-      // primaryKey: true,
+      primaryKey: true,
       defaultValue: DataTypes.UUIDV4
     },
     idPoke: {
       type: DataTypes.INTEGER,
-      autoIncrement: true,
       unique: true,
-      primaryKey: true
+      // primaryKey: true
     },
     name: {
       type: DataTypes.STRING,
@@ -41,13 +40,6 @@ module.exports = (sequelize) => {
       type: DataTypes.INTEGER
     },
     img: {
-      type: DataTypes.STRING
-    },
-    typeOne: {
-      type: DataTypes.STRING,
-      allowNull: false
-    },
-    typeTwo: {
       type: DataTypes.STRING
     },
     createdDb: {

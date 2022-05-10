@@ -1,0 +1,12 @@
+.image {
+  height: 100px;
+}
+
+
+
+.tittle {
+  text-decoration: none;
+  padding: 1em;
+  position: relative;
+  border-radius: 0 0 3px 3px;
+}

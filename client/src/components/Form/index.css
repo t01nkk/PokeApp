@@ -1,0 +1,17 @@
+label {
+  padding: 4px 6px;
+  line-height: 190%;
+  outline-style: none;
+  transition: all 0.6s;
+}
+
+.grid {
+  display: grid;
+  place-items: center;
+  padding-top: 10%;
+}
+
+.errors {
+
+  place-items: right;
+}
