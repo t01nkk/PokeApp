@@ -1,0 +1,27 @@
+.Nav {
+    display: flex;
+    justify-content: center;
+    align-items: flex-end
+}
+
+.button {
+    padding: 5px 10px;
+    min-width: 5px;
+    height: 40px;
+    color: #fff;
+    padding: 5px 10px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: inline-block;
+    outline: none;
+    border-radius: 5px;
+    border: none;
+    background-color: #343a40;
+    color: aliceblue
+}
+
+.button:hover {
+    background-color: #c4c4c4;
+    color: #8d7575
+}

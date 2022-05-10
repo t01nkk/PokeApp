@@ -12,13 +12,14 @@ import {
 } from "../../redux/actions/actionTypes";
 import Card from "../../components/Card";
 import "./styles.css";
+import SearchBar from "../../components/SearchBar";
 
 export default function Home() {
   const dispatch = useDispatch();
   const allPokes = useSelector((state) => state.pokemons);
   const allTypes = useSelector((state) => state.types);
   const [currentPage, setCurrentPage] = useState(1);
-  const [pokemonsPerPage] = useState(10);
+  const [pokemonsPerPage] = useState(12);
   const indexOfLastPokemon = currentPage * pokemonsPerPage;
   const indexOfFirstPokemon = indexOfLastPokemon - pokemonsPerPage;
   const [order, setOrder] = useState("");
@@ -72,9 +73,6 @@ export default function Home() {
 
   return (
     <div>
-      <div className="titulo">
-        <h1>Pokemon</h1>
-      </div>
       <div>
         <button
           className="realodButton"
@@ -85,7 +83,7 @@ export default function Home() {
           Reload Pokemons
         </button>
         <div className="filters">
-          <div>
+          <div >
             <label>Order by name</label>
             <select onChange={(e) => handleOrder(e)} name="Alphabetical Order">
               <option value="Any" hidden={true}>Default</option>
@@ -114,6 +112,7 @@ export default function Home() {
               <option value="Pokemon">Not created</option>
             </select>
           </div>
+
           <div>
             <label>Filter by Type</label>
             <select
@@ -122,11 +121,25 @@ export default function Home() {
             >
               <option value="All" hidden={true}>All </option>
               {allTypes.map((type) => {
-                return <option value={type.name}>{type.name}</option>;
+                return <option value={type.name} key={type.id}>{type.name}</option>;
               })}
             </select>
           </div>
+
+          <div className='searchBar'>
+            <SearchBar />
+          </div>
+
         </div>
+        <div>
+          <Pagination
+            key={allPokes.id}
+            pokemonsPerPage={pokemonsPerPage}
+            totalPokemons={allPokes.length}
+            paginate={paginate}
+          />
+        </div>
+
 
         <div className="pokePosition">
           {currentPokemons.length ?
@@ -138,14 +151,16 @@ export default function Home() {
               );
             }) : <h1>Nothin' to show, you can create your pokemon <a href="/create" style={{ textDecoration: 'none', color: 'red' }}>here</a>!</h1>}
         </div>
-
         <div>
           <Pagination
+            key={allPokes.id}
             pokemonsPerPage={pokemonsPerPage}
             totalPokemons={allPokes.length}
             paginate={paginate}
           />
         </div>
+
+
       </div>
     </div>
   );

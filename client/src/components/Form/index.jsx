@@ -23,19 +23,29 @@ export default function Form() {
 
   function handleSubmit(event) {
     event.preventDefault();
-    console.log(input);
-    dispatch(postPokemon(input));
-    setInput({
-      name: "",
-      hp: "",
-      attack: "",
-      defense: "",
-      speed: "",
-      height: "",
-      weight: "",
-      types: [],
-    });
-    history.push("/pokemons");
+    console.log(errors, 'ERRRRORRRRSSS')
+    console.log(Object.values(errors).length)
+
+    if (Object.values(errors).length) {
+      let message = ''
+      let err = Object.values(errors)
+      console.log(err)
+      return alert(message = err.map(e => e + '\n'))
+    } else {
+      dispatch(postPokemon(input));
+      setInput({
+        name: "",
+        hp: "",
+        attack: "",
+        defense: "",
+        speed: "",
+        height: "",
+        weight: "",
+        types: [],
+      });
+      alert('Pokemon created successfully!')
+      history.push("/pokemons");
+    }
   }
 
   useEffect(() => {
@@ -53,6 +63,7 @@ export default function Form() {
         [e.target.name]: [e.target.value],
       })
     );
+
   }
 
   function handleSelect(event) {
@@ -77,38 +88,53 @@ export default function Form() {
 
   function validate(input) {
     let errors = {};
+    console.log(input.types)
     if (!input.name) {
       errors.name = "Please input a name";
+
     } else if (!tisString(input.name))
-      errors.name = "This field should contain characters Only!";
+      errors.name = "The field name should contain characters Only!";
+
     if (!input.hp) {
-      errors.hp = "Your pokemon most have health!";
+      errors.hp = "Tell your pokemon how much health it has";
+
     } else if (!tisNumber(input.hp))
-      errors.hp = "This field should contain Numbers Only!";
+      errors.hp = "The field Health should contain Numbers Only!";
+
     if (!input.attack) {
-      errors.attack = "No attack? Enter a number!";
+      errors.attack = "You need an attack value for your pokemon";
+
     } else if (!tisNumber(input.attack))
-      errors.attack = "This field should contain Numbers Only!";
+      errors.attack = "The field Attack should contain Numbers Only!";
+
     if (!input.defense) {
       errors.defense =
-        "This pokemon isn't your inmune system... give it a defense value!";
+        "Set a value for Defense";
+
     } else if (!tisNumber(input.defense))
-      errors.defense = "This field should contain Numbers Only!";
+      errors.defense = "The field Defense should contain Numbers Only!";
+
     if (!input.speed) {
-      errors.speed = "Taking things slow, huh?";
+      errors.speed = "Set a speed for your pokemon";
+
     } else if (!tisNumber(input.speed))
-      errors.speed = "This field should contain Numbers Only!";
+      errors.speed = "The field Speed should contain Numbers Only!";
+
     if (!input.weight) {
-      errors.weight = "Give it some mass";
+      errors.weight = "Set a Weight value to your pokemon";
+
     } else if (!tisNumber(input.weight))
-      errors.weight = "This field should contain Numbers Only!";
+      errors.weight = "The field Weight should contain Numbers Only!";
+
     if (!input.height) {
-      errors.height = "Not nearly tall enough";
+      errors.height = "Set a height for your pokemon";
+
     } else if (!tisNumber(input.height))
       errors.height = "This field should contain Numbers Only!";
+
+    if (!input.types.length) errors.types = "You must choose a Type for your pokemon!!"
     return errors;
   }
-
   return (
     <div className="grid">
       <h1>Create your pokemon!</h1>
@@ -211,21 +237,12 @@ export default function Form() {
           })}
         </select>
         <ul>
-          <h5>You can choose more than one</h5>
-          <p>Types you chose: {input.types.map((e) => e + ",")}</p>
+          <p>
+            Types you chose: {input.types.map((e) => e + ",")}
+          </p>
         </ul>
         <button type="submit" >Create!</button>
       </form>
     </div>
   );
 }
-// {"img":"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/3.png",
-// name;
-// hp;
-// attack;
-// defense;
-// speed;
-// height;
-// weight;
-// typeOne;
-// typeTwo;

@@ -22,7 +22,6 @@ router.delete('/delete/:id', async (req, res) => {
     }
 })
 
-
 router.get('/pokemons', async (req, res) => {
     let name = req.query.name
     let allPokes = await getAllPoke();
@@ -68,11 +67,10 @@ router.post('/create', async (req, res) => {
     const exists = await Pokemon.findOne({ where: { name: req.body.name } })
 
     if (exists) return res.json({ info: "This pokemons already exists!" });
-
     try {
         const newPoke = await Pokemon.create({
-            name: req.body.name,
-            hp: req.body.hp,
+            name: req.body.name[0],
+            hp: req.body.hp[0],
             attack: req.body.attack,
             defense: req.body.defense,
             speed: req.body.speed,
@@ -103,7 +101,6 @@ router.get('/pokemons/:id', async (req, res) => {
     // console.log(id.length)
     // if (id.length > 10) {
     let findPokeId = poke.find(e => e.id == id) // EL QUERY MANDA UN STRING Y EL ID ES UN ENTERO
-    console.log(findPokeId)
     findPokeId ?
         res.status(200).json(findPokeId) :
         res.status(404).send({ msg: `The pokemon ID: ${id} doesn't exist.` });

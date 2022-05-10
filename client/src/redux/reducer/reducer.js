@@ -61,14 +61,14 @@ function reducer(state = initialState, { type, payload }) {
         case "ORDER_ATTACK": {
             const atk = payload === "Attack +" ?
                 state.pokemons.sort((a, b) => {
-                    if (a.attack > b.attack) {
+                    if (b.attack > a.attack) {
                         return 1;
-                    } else if (b.attack > a.attack) {
+                    } else if (a.attack > b.attack) {
                         return -1;
                     } else return 0;
                 }) :
                 state.pokemons.sort((a, b) => {
-                    if (a.attack > b.attack) {
+                    if (b.attack > a.attack) {
                         return -1;
                     } else if (b.attack > a.attack) {
                         return 1;
@@ -80,6 +80,7 @@ function reducer(state = initialState, { type, payload }) {
             }
         }
         case "FIND_BY_NAME": {
+
             return {
                 ...state,
                 pokemons: payload

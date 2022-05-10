@@ -38,7 +38,7 @@ export function findByName(name) {
                 payload: pokeName.data
             })
         } catch (err) {
-            console.log({ msg: "This Pokemon doesn't exist" })
+            console.log({ msg: err.message })
         }
     }
 }

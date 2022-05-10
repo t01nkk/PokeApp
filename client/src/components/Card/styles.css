@@ -2,7 +2,22 @@
   height: 100px;
 }
 
+.card {
 
+  border: rgba(0, 0, 0, 0.5) solid 1px;
+  background-color: rgba(252, 191, 61, 0.5);
+
+  margin: 15px;
+  width: 15rem;
+  text-decoration: none;
+  text-align: center;
+}
+
+.card .image {
+  height: 100px;
+  margin: auto;
+  /* display: inline-block; */
+}
 
 .tittle {
   text-decoration: none;

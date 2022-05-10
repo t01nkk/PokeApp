@@ -13,23 +13,34 @@
      background-color: #343a40;
  }
 
- .realodButton :hover {
-     background-color: #fcfcfc;
+ .realodButton:hover {
+     background-color: #c4c4c4;
+     color: #8d7575
  }
 
  .titulo {
      display: grid;
      place-items: center;
-     padding-top: 10%;
+     padding-top: 6%;
  }
 
  .filters {
+     padding-top: 30px;
      display: flex;
-     flex-direction: column;
-     justify-content: flex-end;
+     justify-content: space-around;
+ }
+
+ .filters .searchBar {
+     padding-top: 6px;
+ }
+
+ .ContainerPrincipial {
+     width: 100%;
+     height: 100vh;
  }
 
  .pokePosition {
      display: flex;
-     flex-flow: wrap
+     justify-content: center;
+     flex-wrap: wrap;
  }
