@@ -1,6 +1,6 @@
 const router = require('express').Router();
 const { Types } = require('../db');
-const { default: axios } = require('axios');
+const axios = require('axios');
 
 router.get('/types', async (req, res) => {
     try {
@@ -11,10 +11,7 @@ router.get('/types', async (req, res) => {
                 where: { name: apiTypes[i] }
             })
         }
-        const allTypes = await Types.findAll();
-        if (allTypes.length < 20) {
-            allTypes = await Types.findAll()
-        }
+        var allTypes = await Types.findAll();
         res.send(allTypes);
 
     } catch (err) {

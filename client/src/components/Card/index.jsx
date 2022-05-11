@@ -2,23 +2,21 @@ import React from "react";
 import { Link } from "react-router-dom";
 import "./styles.css";
 
-export default function Card(pokemon) {
+export default function Card({ id, name, img, types }) {
   return (
-    <div key={pokemon.pokemon.id} className="card">
+    <div className="card">
       <div className="tittle">
-        <h2>{pokemon.pokemon.name}</h2>
+        <h2>{name}</h2>
       </div>
       <div className="imgContainer">
-        <Link to={`/pokemons/${pokemon.pokemon.id}`} key={pokemon.pokemon.id} className="Links">
-          <img src={pokemon.pokemon.img} alt={`${pokemon.pokemon.name}`} className="image" />
+        <Link to={`/pokemons/${id}`} className="Links">
+          <img src={img} alt={`${name}`} className="image" />
         </Link>
       </div>
       <div className="types">
-        {/* <h5>{pokemon.pokemon.types[0].name}</h5>
-        <h5>{pokemon.pokemon.types[1] ? pokemon.pokemon.types[1].name : null}</h5> */}
-        <h2 className="types">
-          {pokemon.pokemon.types[0].name}
-          {`${pokemon.pokemon.types[1] ? ` - ${pokemon.pokemon.types[1].name}` : ""}`}
+        <h2 >
+          {types && types[0].name}
+          {`${types && types[1] ? ` - ${types[1].name}` : ""}`}
         </h2>
       </div>
     </div>

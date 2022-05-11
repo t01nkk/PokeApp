@@ -23,16 +23,18 @@ export default function Form() {
 
   function handleSubmit(event) {
     event.preventDefault();
-    console.log(errors, 'ERRRRORRRRSSS')
-    console.log(Object.values(errors).length)
-
+    console.log(input.types)
     if (Object.values(errors).length) {
       let message = ''
+      console.log(message);
       let err = Object.values(errors)
-      console.log(err)
       return alert(message = err.map(e => e + '\n'))
     } else {
-      dispatch(postPokemon(input));
+      const { name, hp, attack, defense, speed, height, weight, types } = input;
+      if (name && hp && attack && defense && speed && height && weight && types.length !== 0) {
+        dispatch(postPokemon(input));
+        alert('Pokemon created successfully!')
+      } else alert("Some field is missing information");
       setInput({
         name: "",
         hp: "",
@@ -43,14 +45,13 @@ export default function Form() {
         weight: "",
         types: [],
       });
-      alert('Pokemon created successfully!')
       history.push("/pokemons");
     }
   }
 
   useEffect(() => {
     dispatch(fetchTypes());
-  }, []);
+  }, [dispatch]);
 
   function handleChange(e) {
     setInput({
@@ -131,8 +132,7 @@ export default function Form() {
 
     } else if (!tisNumber(input.height))
       errors.height = "This field should contain Numbers Only!";
-
-    if (!input.types.length) errors.types = "You must choose a Type for your pokemon!!"
+    // if (input.types.length === 0) errors.types = "You must choose a Type for your pokemon!!"
     return errors;
   }
   return (

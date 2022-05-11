@@ -19,9 +19,10 @@
   /* display: inline-block; */
 }
 
-.tittle {
-  text-decoration: none;
-  padding: 1em;
-  position: relative;
-  border-radius: 0 0 3px 3px;
+.card .tittle {
+  text-transform: capitalize;
+}
+
+.card .types {
+  text-transform: capitalize;
 }

@@ -23,10 +23,10 @@ export default function Home() {
   const indexOfLastPokemon = currentPage * pokemonsPerPage;
   const indexOfFirstPokemon = indexOfLastPokemon - pokemonsPerPage;
   const [order, setOrder] = useState("");
-
   useEffect(() => {
     //POKEMONS
     dispatch(fetchPokemons());
+
   }, [dispatch]);
 
   useEffect(() => {
@@ -37,8 +37,8 @@ export default function Home() {
   function handleClick(e) {
     dispatch(fetchPokemons());
   }
-
-  const currentPokemons = allPokes.slice(
+  console.log(order)
+  const currentPokemons = allPokes?.slice(
     indexOfFirstPokemon,
     indexOfLastPokemon
   );
@@ -72,16 +72,8 @@ export default function Home() {
 
 
   return (
-    <div>
+    <div className="ContainerPrincipial">
       <div>
-        <button
-          className="realodButton"
-          onClick={(e) => {
-            handleClick(e);
-          }}
-        >
-          Reload Pokemons
-        </button>
         <div className="filters">
           <div >
             <label>Order by name</label>
@@ -131,25 +123,45 @@ export default function Home() {
           </div>
 
         </div>
-        <div>
-          <Pagination
-            key={allPokes.id}
-            pokemonsPerPage={pokemonsPerPage}
-            totalPokemons={allPokes.length}
-            paginate={paginate}
-          />
+        <div className="buttonPaginate" >
+          <div className="botoncito">
+            <button
+              className="realodButton"
+              onClick={(e) => {
+                handleClick(e);
+              }}
+            >
+              Reload Pokemons
+            </button>
+          </div>
+          <div className="divPaginado">
+
+            <Pagination
+
+              pokemonsPerPage={pokemonsPerPage}
+              totalPokemons={allPokes.length}
+              paginate={paginate}
+            />
+          </div>
         </div>
 
 
         <div className="pokePosition">
           {currentPokemons.length ?
-            currentPokemons?.map((pokemon) => {
-              return (
-                <div>
-                  <Card pokemon={pokemon} key={pokemon.id} />
-                </div>
-              );
-            }) : <h1>Nothin' to show, you can create your pokemon <a href="/create" style={{ textDecoration: 'none', color: 'red' }}>here</a>!</h1>}
+            typeof currentPokemons[0] === 'string' ?
+              <p>{currentPokemons[0]}</p> :
+              currentPokemons?.map((e, i) => {
+                return (
+                  <div key={i}>
+                    <Card
+                      id={e.id}
+                      name={e.name}
+                      img={e.img}
+                      types={e.types}
+                    />
+                  </div>
+                );
+              }) : <h1>Nothin' to show, you can create your pokemon <a href="/create" style={{ textDecoration: 'none', color: 'red' }}>here</a>!</h1>}
         </div>
         <div>
           <Pagination

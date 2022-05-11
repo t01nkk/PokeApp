@@ -8,28 +8,31 @@ const {
 const { Pokemon, Types } = require('../db');
 
 
-router.delete('/delete/:id', async (req, res) => {
-    const { id } = req.params;
-    try {
-        const toDelete = await deletePokemon(id);
-        if (toDelete) {
-            await Pokemon.destroy({ where: { idPoke: id } })
-            const update = await Pokemon.findAll();
-            res.json(update);
-        }
-    } catch (err) {
-        res.status(404).json({ msg: err.message })
-    }
-})
 
 router.get('/pokemons', async (req, res) => {
     let name = req.query.name
     let allPokes = await getAllPoke();
     if (name) {
-        let pokeName = allPokes.filter(e => e.name.toLowerCase().includes(name.toLowerCase()))
-        pokeName.length ?
-            res.status(200).send(pokeName)
-            : res.status(404).send(`The pokemon "${name}" doesn't exist.`);
+        name = name.toLowerCase();
+        const poke = await Pokemon.findOne({
+            where: {
+                name: name
+            },
+            include: {
+                model: Types,
+                attributes: ['name'],
+                through: {
+                    attributes: [],
+                }
+            }
+        })
+        // let pokeName = allPokes.filter(e => e.name.toLowerCase().includes(name.toLowerCase()))
+        // pokeName.length ?
+        //     res.status(200).send(pokeName)
+        //     : res.status(404).send(`The pokemon "${name}" doesn't exist.`);
+        if (poke) res.status(200).send(poke);
+
+        else res.send(`The pokemon "${name}" doesn't exist.`);
     } else {
         try {
             res.json(allPokes);
@@ -116,6 +119,19 @@ router.get('/pokemons/:id', async (req, res) => {
 
 
 
+// router.delete('/delete/:id', async (req, res) => {
+//     const { id } = req.params;
+//     try {
+//         const toDelete = await deletePokemon(id);
+//         if (toDelete) {
+//             await Pokemon.destroy({ where: { idPoke: id } })
+//             const update = await Pokemon.findAll();
+//             res.json(update);
+//         }
+//     } catch (err) {
+//         res.status(404).json({ msg: err.message })
+//     }
+// })
 
 
 module.exports = router;

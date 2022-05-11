@@ -79,6 +79,14 @@ const getAllPoke = async () => {
     return dbPoke;
 }
 
+// const getAllPoke = async () => {
+//     var pokeApi = await getPoke()
+//     var dbPoke = await getPokeDb();
+//     dbPoke = dbPoke.concat(pokeApi)
+//     return dbPoke;
+
+// }
+
 const deletePokemon = async function (id) {
     const deleting = await Pokemon.findOne({ where: { createdDb: true, idPoke: id } })
     if (deleting) {

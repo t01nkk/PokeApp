@@ -1,7 +1,6 @@
 import React from "react";
 import "./styles.css";
-import { Link } from "react-router-dom";
-import img from "../../resources/Background.jpg";
+import img from "../../resources/Background-image.png";
 
 export default function LandingPage() {
   return (

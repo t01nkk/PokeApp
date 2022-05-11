@@ -15,9 +15,14 @@ export default function SearchBar() {
 
   function handleSubmit(e) {
     e.preventDefault();
-    const poke = dispatch(findByName(name));
-    setName("");
-    return poke;
+    try {
+      const poke = dispatch(findByName(name));
+      setName("");
+      return poke;
+
+    } catch (err) {
+      alert('This Pokemon does not exist')
+    }
   }
 
   return (

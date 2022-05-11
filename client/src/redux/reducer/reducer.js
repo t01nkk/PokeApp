@@ -80,10 +80,9 @@ function reducer(state = initialState, { type, payload }) {
             }
         }
         case "FIND_BY_NAME": {
-
             return {
                 ...state,
-                pokemons: payload
+                pokemons: [payload]
             }
         }
         case "CREATE_POKEMON": {
