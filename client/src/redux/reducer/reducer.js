@@ -76,7 +76,7 @@ function reducer(state = initialState, { type, payload }) {
                 })
             return {
                 ...state,
-                pokemons: atk
+                order: atk
             }
         }
         case "FIND_BY_NAME": {

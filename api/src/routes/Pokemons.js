@@ -1,7 +1,6 @@
 const router = require('express').Router();
 
 const {
-    deletePokemon,
     getAllPoke,
 } = require('../Middlewares/middleware');
 
@@ -42,6 +41,39 @@ router.get('/pokemons', async (req, res) => {
 
     }
 })
+// router.get('/pokemons', async (req, res) => {
+//     let name = req.query.name
+//     let allPokes = await getAllPoke();
+//     if (name) {
+//         name = name.toLowerCase();
+//         const poke = await Pokemon.findOne({
+//             where: {
+//                 name: name
+//             },
+//             include: {
+//                 model: Types,
+//                 attributes: ['name'],
+//                 through: {
+//                     attributes: [],
+//                 }
+//             }
+//         })
+//         // let pokeName = allPokes.filter(e => e.name.toLowerCase().includes(name.toLowerCase()))
+//         // pokeName.length ?
+//         //     res.status(200).send(pokeName)
+//         //     : res.status(404).send(`The pokemon "${name}" doesn't exist.`);
+//         if (poke) res.status(200).send(poke);
+
+//         else res.send(`The pokemon "${name}" doesn't exist.`);
+//     } else {
+//         try {
+//             res.json(allPokes);
+//         } catch (err) {
+//             res.send({ msg: err.message })
+//         }
+
+//     }
+// })
 
 router.post('/create', async (req, res) => {
     const {
@@ -52,6 +84,7 @@ router.post('/create', async (req, res) => {
         speed,
         height,
         weight,
+        img
     } = req.body;
     if (
         !name ||
@@ -61,7 +94,7 @@ router.post('/create', async (req, res) => {
         !speed ||
         !height ||
         !weight
-    ) { return res.status(400).json({ info: `Theres a value missing` }) }
+    ) { return res.status(400).json({ info: `Theres a missing value` }) }
     let arrType = []
     req.body.types.map(e => arrType.push({ name: e })) //por la forma en la que mando la informacion desde el front, se me hizo
     //necesario parsear la información desde el back para que la reconozca.
@@ -72,15 +105,15 @@ router.post('/create', async (req, res) => {
     if (exists) return res.json({ info: "This pokemons already exists!" });
     try {
         const newPoke = await Pokemon.create({
-            name: req.body.name[0],
-            hp: req.body.hp[0],
+            name: req.body.name,
+            hp: req.body.hp,
             attack: req.body.attack,
             defense: req.body.defense,
             speed: req.body.speed,
             height: req.body.height,
             weight: req.body.weight,
             createdDb: true,
-            img: "https://media.giphy.com/media/DRfu7BT8ZK1uo/giphy.gif"
+            img: img ? img : "https://media.giphy.com/media/DRfu7BT8ZK1uo/giphy.gif"
         });
         let typeDb = await Types.findAll({ where: { name: arrType[0].name } })
         newPoke.addType(typeDb);
@@ -96,6 +129,13 @@ router.post('/create', async (req, res) => {
 
 
 });
+
+router.put('/modify/:id', async (req, res) => {
+    let { id } = req.params;
+    var pokemon = await Pokemon.findOne({ where: { id: id } });
+    console.log(pokemon)
+
+})
 
 router.get('/pokemons/:id', async (req, res) => {
     let { id } = req.params;

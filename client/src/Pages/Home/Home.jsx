@@ -23,6 +23,7 @@ export default function Home() {
   const indexOfLastPokemon = currentPage * pokemonsPerPage;
   const indexOfFirstPokemon = indexOfLastPokemon - pokemonsPerPage;
   const [order, setOrder] = useState("");
+  console.log(order)
   useEffect(() => {
     //POKEMONS
     dispatch(fetchPokemons());
@@ -37,7 +38,7 @@ export default function Home() {
   function handleClick(e) {
     dispatch(fetchPokemons());
   }
-  console.log(order)
+
   const currentPokemons = allPokes?.slice(
     indexOfFirstPokemon,
     indexOfLastPokemon
@@ -148,20 +149,20 @@ export default function Home() {
 
         <div className="pokePosition">
           {currentPokemons.length ?
-            typeof currentPokemons[0] === 'string' ?
-              <p>{currentPokemons[0]}</p> :
-              currentPokemons?.map((e, i) => {
-                return (
-                  <div key={i}>
-                    <Card
-                      id={e.id}
-                      name={e.name}
-                      img={e.img}
-                      types={e.types}
-                    />
-                  </div>
-                );
-              }) : <h1>Nothin' to show, you can create your pokemon <a href="/create" style={{ textDecoration: 'none', color: 'red' }}>here</a>!</h1>}
+            // typeof currentPokemons[0] === 'string' ?
+            // <p>{currentPokemons[0]}</p> :
+            currentPokemons?.map((e, i) => {
+              return (
+                <div key={i}>
+                  <Card
+                    id={e.id}
+                    name={e.name}
+                    img={e.img}
+                    types={e.types}
+                  />
+                </div>
+              );
+            }) : <h1>Nothin' to show, you can create your pokemon <a href="/create" style={{ textDecoration: 'none', color: 'red' }}>here</a>!</h1>}
         </div>
         <div>
           <Pagination

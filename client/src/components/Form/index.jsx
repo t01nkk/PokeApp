@@ -33,6 +33,7 @@ export default function Form() {
       const { name, hp, attack, defense, speed, height, weight, types } = input;
       if (name && hp && attack && defense && speed && height && weight && types.length !== 0) {
         dispatch(postPokemon(input));
+
         alert('Pokemon created successfully!')
       } else alert("Some field is missing information");
       setInput({
@@ -54,9 +55,10 @@ export default function Form() {
   }, [dispatch]);
 
   function handleChange(e) {
+    console.log(input)
     setInput({
       ...input,
-      [e.target.name]: [e.target.value],
+      [e.target.name]: e.target.value,
     });
     setErrors(
       validate({
@@ -68,6 +70,7 @@ export default function Form() {
   }
 
   function handleSelect(event) {
+
     setInput({
       ...input,
       types: [...input.types, event.target.value],
