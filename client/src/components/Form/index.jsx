@@ -23,7 +23,6 @@ export default function Form() {
 
   function handleSubmit(event) {
     event.preventDefault();
-    console.log(input.types)
     if (Object.values(errors).length) {
       let message = ''
       console.log(message);
@@ -46,7 +45,7 @@ export default function Form() {
         weight: "",
         types: [],
       });
-      history.push("/pokemons");
+      // history.push("/pokemons");
     }
   }
 
@@ -60,6 +59,7 @@ export default function Form() {
       ...input,
       [e.target.name]: e.target.value,
     });
+
     setErrors(
       validate({
         ...input,
@@ -92,49 +92,34 @@ export default function Form() {
 
   function validate(input) {
     let errors = {};
-    console.log(input.types)
     if (!input.name) {
       errors.name = "Please input a name";
 
-    } else if (!tisString(input.name))
-      errors.name = "The field name should contain characters Only!";
+    } else if (!tisString(input.name)) errors.name = "The field name should contain characters Only!";
 
-    if (!input.hp) {
-      errors.hp = "Tell your pokemon how much health it has";
+    else if (!input.hp) errors.hp = "Tell your pokemon how much health it has";
 
-    } else if (!tisNumber(input.hp))
-      errors.hp = "The field Health should contain Numbers Only!";
+    else if (!tisNumber(input.hp)) errors.hp = "The field Health should contain Numbers Only!";
 
-    if (!input.attack) {
-      errors.attack = "You need an attack value for your pokemon";
+    else if (!input.attack) errors.attack = "You need an attack value for your pokemon";
 
-    } else if (!tisNumber(input.attack))
-      errors.attack = "The field Attack should contain Numbers Only!";
+    else if (!tisNumber(input.attack)) errors.attack = "The field Attack should contain Numbers Only!";
 
-    if (!input.defense) {
-      errors.defense =
-        "Set a value for Defense";
+    else if (!input.defense) errors.defense = "Set a value for Defense";
 
-    } else if (!tisNumber(input.defense))
-      errors.defense = "The field Defense should contain Numbers Only!";
+    else if (!tisNumber(input.defense)) errors.defense = "The field Defense should contain Numbers Only!";
 
-    if (!input.speed) {
-      errors.speed = "Set a speed for your pokemon";
+    else if (!input.speed) errors.speed = "Set a speed for your pokemon";
 
-    } else if (!tisNumber(input.speed))
-      errors.speed = "The field Speed should contain Numbers Only!";
+    else if (!tisNumber(input.speed)) errors.speed = "The field Speed should contain Numbers Only!";
 
-    if (!input.weight) {
-      errors.weight = "Set a Weight value to your pokemon";
+    else if (!input.weight) errors.weight = "Set a Weight value to your pokemon";
 
-    } else if (!tisNumber(input.weight))
-      errors.weight = "The field Weight should contain Numbers Only!";
+    else if (!tisNumber(input.weight)) errors.weight = "The field Weight should contain Numbers Only!";
 
-    if (!input.height) {
-      errors.height = "Set a height for your pokemon";
+    else if (!input.height) errors.height = "Set a height for your pokemon";
 
-    } else if (!tisNumber(input.height))
-      errors.height = "This field should contain Numbers Only!";
+    else if (!tisNumber(input.height)) errors.height = "This field should contain Numbers Only!";
     // if (input.types.length === 0) errors.types = "You must choose a Type for your pokemon!!"
     return errors;
   }

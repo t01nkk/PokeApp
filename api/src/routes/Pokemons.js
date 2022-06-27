@@ -11,6 +11,9 @@ const { Pokemon, Types } = require('../db');
 router.get('/pokemons', async (req, res) => {
     let name = req.query.name
     let allPokes = await getAllPoke();
+    if (name === '') {
+        return res.status(404).send({ msg: "This pokemon doesn't exist" })
+    }
     if (name) {
         name = name.toLowerCase();
         const poke = await Pokemon.findOne({
@@ -25,13 +28,9 @@ router.get('/pokemons', async (req, res) => {
                 }
             }
         })
-        // let pokeName = allPokes.filter(e => e.name.toLowerCase().includes(name.toLowerCase()))
-        // pokeName.length ?
-        //     res.status(200).send(pokeName)
-        //     : res.status(404).send(`The pokemon "${name}" doesn't exist.`);
         if (poke) res.status(200).send(poke);
 
-        else res.send(`The pokemon "${name}" doesn't exist.`);
+        else res.status(404).send(`The pokemon "${name}" doesn't exist.`);
     } else {
         try {
             res.json(allPokes);
@@ -41,39 +40,6 @@ router.get('/pokemons', async (req, res) => {
 
     }
 })
-// router.get('/pokemons', async (req, res) => {
-//     let name = req.query.name
-//     let allPokes = await getAllPoke();
-//     if (name) {
-//         name = name.toLowerCase();
-//         const poke = await Pokemon.findOne({
-//             where: {
-//                 name: name
-//             },
-//             include: {
-//                 model: Types,
-//                 attributes: ['name'],
-//                 through: {
-//                     attributes: [],
-//                 }
-//             }
-//         })
-//         // let pokeName = allPokes.filter(e => e.name.toLowerCase().includes(name.toLowerCase()))
-//         // pokeName.length ?
-//         //     res.status(200).send(pokeName)
-//         //     : res.status(404).send(`The pokemon "${name}" doesn't exist.`);
-//         if (poke) res.status(200).send(poke);
-
-//         else res.send(`The pokemon "${name}" doesn't exist.`);
-//     } else {
-//         try {
-//             res.json(allPokes);
-//         } catch (err) {
-//             res.send({ msg: err.message })
-//         }
-
-//     }
-// })
 
 router.post('/create', async (req, res) => {
     const {
@@ -96,8 +62,7 @@ router.post('/create', async (req, res) => {
         !weight
     ) { return res.status(400).json({ info: `Theres a missing value` }) }
     let arrType = []
-    req.body.types.map(e => arrType.push({ name: e })) //por la forma en la que mando la informacion desde el front, se me hizo
-    //necesario parsear la información desde el back para que la reconozca.
+    req.body.types.map(e => arrType.push({ name: e }))
     if (!arrType.length) { return res.status(400).json({ info: `Choose at least one type` }) }
 
     const exists = await Pokemon.findOne({ where: { name: req.body.name } })
@@ -130,12 +95,12 @@ router.post('/create', async (req, res) => {
 
 });
 
-router.put('/modify/:id', async (req, res) => {
-    let { id } = req.params;
-    var pokemon = await Pokemon.findOne({ where: { id: id } });
-    console.log(pokemon)
+// router.put('/modify/:id', async (req, res) => {
+//     let { id } = req.params;
+//     var pokemon = await Pokemon.findOne({ where: { id: id } });
+//     await Pokemon.update({where:{id:pokemon.id}})
 
-})
+// })
 
 router.get('/pokemons/:id', async (req, res) => {
     let { id } = req.params;
@@ -147,12 +112,6 @@ router.get('/pokemons/:id', async (req, res) => {
     findPokeId ?
         res.status(200).json(findPokeId) :
         res.status(404).send({ msg: `The pokemon ID: ${id} doesn't exist.` });
-    // } else {
-    //     let findPokeId = poke.find(e => e.idPoke == id)
-    //     findPokeId ?
-    //         res.status(200).json(findPokeId) :
-    //         res.status(404).send({ msg: `The pokemon ID: ${id} doesn't exist.` });
-    // }
 })
 
 

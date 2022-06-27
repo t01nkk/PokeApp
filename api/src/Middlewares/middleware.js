@@ -46,11 +46,9 @@ const createFromApi = async function () {
             })
             let typeDb = await Types.findAll({ where: { name: apiPoke[i].types[0].name } })
             newPoke.addType(typeDb);
-            // console.log(typeDb, i);
             if (apiPoke[i].types[1]) {
                 let typeDb2 = await Types.findAll({ where: { name: apiPoke[i].types[1].name } })
                 newPoke.addType(typeDb2);
-                // console.log(typeDb2, i, 'ACA ESTA INDEX');
             }
         }
 
@@ -74,18 +72,11 @@ const getAllPoke = async () => {
     const createAll = await createFromApi()
     var dbPoke = await getPokeDb();
     if (dbPoke[dbPoke.length - 1].types[0] === undefined) {
+        console.log('what?')
         return getAllPoke();
     }
     return dbPoke;
 }
-
-// const getAllPoke = async () => {
-//     var pokeApi = await getPoke()
-//     var dbPoke = await getPokeDb();
-//     dbPoke = dbPoke.concat(pokeApi)
-//     return dbPoke;
-
-// }
 
 const deletePokemon = async function (id) {
     const deleting = await Pokemon.findOne({ where: { createdDb: true, idPoke: id } })
