@@ -5,10 +5,10 @@ import Pagination from "../../components/Pagination/Pagination";
 import {
   fetchPokemons,
   fetchTypes,
-  filterPokemonsByType,
-  filterByCreated,
-  OrderingByName,
-  OrderingByAttack
+  // filterPokemonsByType,
+  // orderPokemon,
+  filterPokemons,
+  filterByCreated
 } from "../../redux/actions/actionTypes";
 import Card from "../../components/Card";
 import "./styles.css";
@@ -19,11 +19,10 @@ export default function Home() {
   const allPokes = useSelector((state) => state.pokemons);
   const allTypes = useSelector((state) => state.types);
   const [currentPage, setCurrentPage] = useState(1);
-  const [pokemonsPerPage] = useState(12);
+  const [pokemonsPerPage] = useState(50);
   const indexOfLastPokemon = currentPage * pokemonsPerPage;
   const indexOfFirstPokemon = indexOfLastPokemon - pokemonsPerPage;
-  const [order, setOrder] = useState("");
-  console.log(order)
+  const [filter, setFilter] = useState("");
   useEffect(() => {
     //POKEMONS
     dispatch(fetchPokemons());
@@ -46,51 +45,71 @@ export default function Home() {
 
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
-  //FILTER STATUS
-  function handleFilterStatus(event) {
-    dispatch(filterPokemonsByType(event.target.value));
-  }
-
   //FILTER CREATE
   function handleFilterCreated(event) {
     dispatch(filterByCreated(event.target.value));
   }
 
-  //ORDER NAME
-  function handleOrder(event) {
-    event.preventDefault();
-    dispatch(OrderingByName(event.target.value));
+  // //FILTER STATUS
+  // function handleFilterStatus(event) {
+  //   dispatch(filterPokemonsByType(event.target.value));
+  // }
+
+  //   // ORDER NAME
+  //   function handleOrder(event) {
+  //     event.preventDefault();
+  //     dispatch(OrderingByName(event.target.value));
+  //     setCurrentPage(1);
+  //     setOrder(`Order ${event.target.value}`);
+  //   }
+  // //  ORDER ATTACK
+  //   function handleOrderAttack(event) {
+  //     event.preventDefault();
+  //     dispatch(OrderingByAttack(event.target.value));
+  //     setCurrentPage(1);
+  //     setOrder(`Ordered ${event.target.value}`);
+  //   }
+
+  function filterPokemons(event) {
+    // event.preventDefault();
+    dispatch(filterPokemons(event.target.value))
+    // setFilter(event.target.value)
     setCurrentPage(1);
-    setOrder(`Order ${event.target.value}`);
   }
+  // function handleFilters(event) {
+  //   event.preventDefault();
+  //   console.log(event)
+  //   dispatch(filterPokemonsByType(event.target.value))
+  //   setCurrentPage(1);
+  // }
 
-  function handleOrderAttack(event) {
-    event.preventDefault();
-    dispatch(OrderingByAttack(event.target.value));
-    setCurrentPage(1);
-    setOrder(`Ordered ${event.target.value}`);
-  }
+  // function handleOrder(event) {
+  //   event.preventDefault();
+  //   console.log(event)
+  //   dispatch(orderPokemon(event.target.value))
+  //   setCurrentPage(1);
+  // }
 
-
+  // type, attackUp, attackDown, nameUp, nameDown
   return (
     <div className="ContainerPrincipial">
       <div>
         <div className="filters">
           <div >
             <label>Order by name</label>
-            <select onChange={(e) => handleOrder(e)} name="Alphabetical Order">
+            <select onChange={(e) => filterPokemons(e)} name="Alphabetical Order">
               <option value="Any" hidden={true}>Default</option>
-              <option value="A-Z">Order A-Z</option>
-              <option value="Z-A">Order Z-A</option>
+              <option value="nameUp">Order A-Z</option>
+              <option value="nameDown">Order Z-A</option>
             </select>
           </div>
 
           <div>
             <label>Order by attack</label>
-            <select onChange={(e) => handleOrderAttack(e)} name="Order by attack">
+            <select onChange={(e) => filterPokemons(e)} name="Order by attack">
               <option value="Any" hidden={true}>Default</option>
-              <option value="Attack +">Attack +</option>
-              <option value="Attack -">Attack -</option>
+              <option value="attackUp">Attack +</option>
+              <option value="attackDown">Attack -</option>
             </select>
           </div>
 
@@ -109,7 +128,7 @@ export default function Home() {
           <div>
             <label>Filter by Type</label>
             <select
-              onChange={(e) => handleFilterStatus(e)}
+              onChange={(e) => filterPokemons(e)}
               name="Filter by Pokemon Type"
             >
               <option value="All" hidden={true}>All </option>

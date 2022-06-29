@@ -7,7 +7,12 @@ module.exports = (sequelize) => {
     name: {
       type: DataTypes.STRING,
       unique: true
+    },
+    createdDb: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: false
     }
+
   },
     { timestamps: false });
 };

@@ -1,22 +1,32 @@
 const router = require('express').Router();
 const { Types } = require('../db');
-const axios = require('axios');
 
-router.get('/types', async (req, res) => {
+router.get('/', async (req, res) => {
     try {
-        const api = await axios.get('https://pokeapi.co/api/v2/type');
-        const apiTypes = api.data.results.map(e => e.name)
-        for (let i = 0; i < apiTypes.length; i++) {
-            Types.findOrCreate({
-                where: { name: apiTypes[i] }
-            })
-        }
-        var allTypes = await Types.findAll();
-        res.send(allTypes);
-
+        const types = await Types.findAll();
+        res.send(types);
     } catch (err) {
-        res.status(404).send(err.message);
+        console.log(err.message);
+        res.send({ msg: err.message });
     }
 })
+
+router.post('/', async (req, res) => {
+    const { name } = req.body;
+    try {
+        let exists = await Types.findOne({ where: { name: name } });
+        if (!exists) {
+            await Types.create({
+                name: name
+            });
+            return res.send({ msg: "You just created a new Type of pokemon!" })
+        }
+        res.send({ msg: "This type of pokemon already exists" });
+    } catch (err) {
+        console.log('here be the error', err.message);
+        res.send({ msg: err.message });
+    }
+})
+
 
 module.exports = router;

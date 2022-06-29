@@ -1,66 +1,115 @@
 const router = require('express').Router();
-
-const {
-    getAllPoke,
-} = require('../Middlewares/middleware');
-
 const { Pokemon, Types } = require('../db');
 
+//********************************************************************************************************************************************//
+//*********************************************************************************************************************************//
+//********************************************************************************************************************************************//
 
+router.get('/', async (req, res) => {
+    let { name, type, attackUp, attackDown, nameUp, nameDown, created, api } = req.query
 
-router.get('/pokemons', async (req, res) => {
-    let name = req.query.name
-    let allPokes = await getAllPoke();
-    if (name === '') {
-        return res.status(404).send({ msg: "This pokemon doesn't exist" })
-    }
-    if (name) {
-        name = name.toLowerCase();
-        const poke = await Pokemon.findOne({
-            where: {
-                name: name
-            },
+    try {
+
+        if (created) {
+            const createdInDb = await Pokemon.findAll({ where: { createdDb: true } });
+            if (!createdInDb.length) {
+                return res.send({ msg: "You haven't created any new pokemon yet" })
+            }
+            return res.send(createdInDb);
+        }
+        if (api) {
+            const createdFromApi = await Pokemon.findAll({ where: { createdDb: false } });
+            return res.send(createdFromApi);
+        }
+
+        if (name) {  //find by name
+            name = name.toLowerCase();
+            const poke = await Pokemon.findOne({
+                where: { name: name },
+                include: {
+                    model: Types,
+                    attributes: ['name'],
+                    through: { attributes: [], }
+                }
+            })
+            if (poke) return res.status(200).send(poke);
+            else return res.status(404).send(`The pokemon "${name}" doesn't exist.`);
+        }
+
+        if (type) { //Filtro de tipo -- Cierta duplicacion de esfuerzos ya que el filtro de tipos usa una variable distinta
+            const filterType = await Pokemon.findAll({
+                include: {  //incluye el modelo Types
+                    model: Types,
+                    where: { 'name': type }, // dentrro de la inclución filtro los que tienen el nombre que busco
+                    attributes: ['name'],
+                    through: { attributes: [] }
+                },
+            })
+
+            if (filterType.length) { // Checkeo si encontró algo
+                let filterArray = [];
+                for (var i = 0; i < filterType.length; i++) { //busco una por una todas la coincidencias 
+                    let found = await Pokemon.findOne({  //el .map está sobrevalorado
+                        where: { id: filterType[i].id },
+                        include: {
+                            model: Types,
+                            attributes: ['name'],
+                            through: { attributes: [] }
+                        }
+                    })
+                    filterArray.push(found);
+                }
+                //Orden por ataque
+                if (attackUp) filterArray = filterArray.sort((a, b) => b.attack - a.attack)
+                //Orden descendente
+                if (attackDown) filterArray = filterArray.sort((a, b) => a.attack - b.attack)
+                // Alfabetico
+                if (nameUp) filterArray = filterArray.sort((a, b) => b.name.localeCompare(a.name))
+                // Alfabetico descendente
+                if (nameDown) filterArray = filterArray.sort((a, b) => a.name.localeCompare(b.name))
+
+                return res.send(filterArray);
+            }
+        }
+        console.log('shegué')
+        var allPokeNoMods = await Pokemon.findAll({  // Find All No Type Filter
             include: {
                 model: Types,
                 attributes: ['name'],
-                through: {
-                    attributes: [],
-                }
+                through: { attributes: [], }
             }
         })
-        if (poke) res.status(200).send(poke);
 
-        else res.status(404).send(`The pokemon "${name}" doesn't exist.`);
-    } else {
-        try {
-            res.json(allPokes);
-        } catch (err) {
-            res.send({ msg: err.message })
-        }
+        //Orden por ataque
+        if (attackUp) allPokeNoMods = allPokeNoMods.sort((a, b) => b.attack - a.attack);
+        //Orden descendente
+        if (attackDown) allPokeNoMods = allPokeNoMods.sort((a, b) => a.attack - b.attack);
+        // Orden Alfabetico
+        if (nameUp) allPokeNoMods = allPokeNoMods.sort((a, b) => b.name.localeCompare(a.name));
+        // Orden Alfabetico descendente
+        if (nameDown) allPokeNoMods = allPokeNoMods.sort((a, b) => a.name.localeCompare(b.name));
 
+        res.send(allPokeNoMods); // return All
+    } catch (err) {
+        console.log("here be error", err.message);
+        res.send({ msg: err.message });
     }
+
 })
+
+//********************************************************************************************************************************************//
+//*********************************************************************************************************************************//
+//********************************************************************************************************************************************//
 
 router.post('/create', async (req, res) => {
     const {
-        name,
-        hp,
-        attack,
-        defense,
-        speed,
-        height,
-        weight,
-        img
+        name, hp, attack, defense, speed, height, weight, img
     } = req.body;
-    if (
-        !name ||
-        !hp ||
-        !attack ||
-        !defense ||
-        !speed ||
-        !height ||
-        !weight
-    ) { return res.status(400).json({ info: `Theres a missing value` }) }
+    if (!name || !hp || !attack || !defense || !speed || !height || !weight) {
+        return res.status(400).json({
+            info: `Theres a missing value`
+        })
+    }
     let arrType = []
     req.body.types.map(e => arrType.push({ name: e }))
     if (!arrType.length) { return res.status(400).json({ info: `Choose at least one type` }) }
@@ -95,42 +144,79 @@ router.post('/create', async (req, res) => {
 
 });
 
-// router.put('/modify/:id', async (req, res) => {
-//     let { id } = req.params;
-//     var pokemon = await Pokemon.findOne({ where: { id: id } });
-//     await Pokemon.update({where:{id:pokemon.id}})
+//********************************************************************************************************************************************//
+//*********************************************************************************************************************************//
+//********************************************************************************************************************************************//
 
-// })
-
-router.get('/pokemons/:id', async (req, res) => {
+router.put('/modify/:id', async (req, res) => {
     let { id } = req.params;
+    let { name, hp, attack, defense, speed, height, weight, img } = req.body;
+    console.log(name, hp, attack, defense, speed, height, weight, img)
+    try {
+        let find = await Pokemon.findOne({ where: { id: id } })
+        if (find) {
 
-    let poke = await getAllPoke();
-    // console.log(id.length)
-    // if (id.length > 10) {
-    let findPokeId = poke.find(e => e.id == id) // EL QUERY MANDA UN STRING Y EL ID ES UN ENTERO
-    findPokeId ?
-        res.status(200).json(findPokeId) :
-        res.status(404).send({ msg: `The pokemon ID: ${id} doesn't exist.` });
-})
+            await Pokemon.update({
+                name: name ? name : find.name,
+                hp: hp ? hp : find.hp,
+                attack: attack ? attack : find.attack,
+                defense: defense ? defense : find.defense,
+                speed: speed ? speed : find.speed,
+                height: height ? height : find.height,
+                weight: weight ? weight : find.weight,
+                img: img ? img : find.img
+            }, { where: { id: id } })
 
+            return res.send({ msg: "Updated successfully" });
+        }
+        res.send({ msg: "This Pokemon doen't exist" });
 
+    } catch (err) {
+        console.log("This be the message", err.message)
+        res.send({ msg: err.message })
+    }
+});
 
+//********************************************************************************************************************************************//
+//*********************************************************************************************************************************//
+//********************************************************************************************************************************************//
 
+router.get('/:id', async (req, res) => {
+    try {
+        let { id } = req.params;
+        const findIt = await Pokemon.findOne({
+            where: { id: id },
+            include: {
+                model: Types,
+                attributes: ['name'],
+                through: { attributes: [], }
+            }
+        });
+        res.send(findIt);
+    } catch (err) {
+        console.log(err.message);
+        res.send({ msg: err.msg });
+    }
+});
 
-// router.delete('/delete/:id', async (req, res) => {
-//     const { id } = req.params;
-//     try {
-//         const toDelete = await deletePokemon(id);
-//         if (toDelete) {
-//             await Pokemon.destroy({ where: { idPoke: id } })
-//             const update = await Pokemon.findAll();
-//             res.json(update);
-//         }
-//     } catch (err) {
-//         res.status(404).json({ msg: err.message })
-//     }
-// })
+//********************************************************************************************************************************************//
+//*********************************************************************************************************************************//
+//********************************************************************************************************************************************//
+
+router.delete('/delete/:id', async (req, res) => {
+    const { id } = req.params;
+    try {
+        const toDelete = await Pokemon.findOne({ where: { id: id } })
+        if (toDelete) {
+            await Pokemon.destroy({ where: { id: id } })
+            return res.send({ msg: "Pokemon Deleted successfully" });
+        }
+        res.send({ msg: `The Pokemon id  ${id}  doen't exist ` });
+    } catch (err) {
+        console.log({ msg: err.message })
+        res.send({ msg: err.message })
+    }
+});
 
 
 module.exports = router;

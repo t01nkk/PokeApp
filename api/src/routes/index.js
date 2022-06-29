@@ -6,8 +6,8 @@ const router = require('express').Router();
 const pokeTypes = require('./Types');
 const Pokelist = require('./Pokemons');
 
-router.use('/', Pokelist);
-router.use('/', pokeTypes);
+router.use('/pokemon', Pokelist);
+router.use('/type', pokeTypes);
 // Configurar los routers
 // Ejemplo: router.use('/auth', authRouter);
 

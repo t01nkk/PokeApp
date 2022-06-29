@@ -8,7 +8,7 @@ export default function Details(props) {
   const dispatch = useDispatch();
 
   const { id } = useParams()
-
+  console.log(id)
   useEffect(() => {
     dispatch(fetchDetails(id));
   }, [dispatch, id]);
