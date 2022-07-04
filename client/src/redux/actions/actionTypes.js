@@ -1,4 +1,5 @@
 import axios from "axios";
+import { useEffect } from "react";
 const BASE_URL = process.env.REACT_APP_DOMAIN;
 
 export function fetchPokemons() {
@@ -71,18 +72,20 @@ export function filterByCreated(payload) {
     }
 }
 
+
+
 export function filterPokemons(payload) {
     return async function (dispatch) {
-        console.log("this be payload action  ", payload)
+        const filters = await axios.get(`${BASE_URL}/pokemon?type=${payload.type}&attackUp=${payload.attackUp}&attackDown=${payload.attackDown}&nameUp=${payload.nameUp}&nameDown=${payload.nameDown}`)
 
-        // let query = `?type=${type}&attackUp=${attackUp}&attackDown=${attackDown}&nameUp=${nameUp}&nameDown=${nameDown}`
-        const filters = await axios(`${BASE_URL}/pokemon?${payload}=true`)
         return dispatch({
             type: "FILTERS",
             payload: filters.data
         })
     }
 }
+
+
 
 // export function filterPokemonsByType(payload) {
 //     return async function (dispatch) {

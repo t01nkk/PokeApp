@@ -4,10 +4,14 @@ const { Pokemon, Types } = require('../db');
 //********************************************************************************************************************************************//
 //*********************************************************************************************************************************//
 //********************************************************************************************************************************************//
-
+// type: 'false',
+//   attackUp: 'false',
+//   attackDown: 'false',
+//   nameUp: 'false',
+//   nameDown: 'false'
 router.get('/', async (req, res) => {
     let { name, type, attackUp, attackDown, nameUp, nameDown, created, api } = req.query
-
+    // console.log('hola', name, type, attackUp, attackDown, nameUp, nameDown, created, api)
     try {
 
         if (created) {
@@ -71,7 +75,6 @@ router.get('/', async (req, res) => {
                 return res.send(filterArray);
             }
         }
-        console.log('shegué')
         var allPokeNoMods = await Pokemon.findAll({  // Find All No Type Filter
             include: {
                 model: Types,
@@ -88,7 +91,7 @@ router.get('/', async (req, res) => {
         if (nameUp) allPokeNoMods = allPokeNoMods.sort((a, b) => b.name.localeCompare(a.name));
         // Orden Alfabetico descendente
         if (nameDown) allPokeNoMods = allPokeNoMods.sort((a, b) => a.name.localeCompare(b.name));
-
+        console.log(allPokeNoMods[0].types)
         res.send(allPokeNoMods); // return All
     } catch (err) {
         console.log("here be error", err.message);
