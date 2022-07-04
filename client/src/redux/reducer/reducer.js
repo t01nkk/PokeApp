@@ -33,7 +33,7 @@ function reducer(state = initialState, { type, payload }) {
                 pokemons: payload === 'All' ? allPoke : filterByCreated
             }
         }
-        case "FILTER": {
+        case "FILTERS": {
             return {
                 ...state,
                 pokemons: payload

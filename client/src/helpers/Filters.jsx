@@ -11,20 +11,14 @@ export default function Filters() {
     const allPokes = useSelector((state) => state.pokemons);
     const dispatch = useDispatch();
     const [filter, setFilter] = useState({
-        type: false,
-        nameUp: false,
-        nameDown: false,
-        attackUp: false,
-        attackDown: false
+        typeFilter: "default",
+        order: 'default'
     });
 
     function resetFilters() {
         setFilter({
-            type: '',
-            nameUp: false,
-            nameDown: false,
-            attackUp: false,
-            attackDown: false
+            typeFilter: 'default',
+            order: 'default',
         })
     }
 
@@ -34,43 +28,42 @@ export default function Filters() {
             case 'nameUp': {
                 setFilter({
                     ...filter,
-                    nameUp: true
+                    order: 'nameUp'
                 })
                 break;
             };
             case 'nameDown': {
                 setFilter({
                     ...filter,
-                    nameDown: true
+                    order: "nameDown"
                 })
                 break;
             };
             case 'attackUp': {
                 setFilter({
                     ...filter,
-                    attackUp: true
+                    order: "attackUp"
                 })
                 break;
             };
             case 'attackDown': {
                 setFilter({
                     ...filter,
-                    attackDown: true
+                    order: "attackDown"
                 })
                 break;
             };
             default: {
                 setFilter({
                     ...filter,
-                    type: event.target.value
+                    typeFilter: event.target.value
                 })
                 break;
             }
         }
     }
-
     useEffect(() => {
-        if (Object.values(filter).find(e => e === true)) dispatch(filterPokemons(filter));
+        if (Object.values(filter).find(e => e !== "default")) dispatch(filterPokemons(filter));
     }, [filter])
 
     return (
@@ -85,7 +78,6 @@ export default function Filters() {
                     <option value="attackDown">Attack -</option>
                 </select>
             </div>
-
             <div>
                 <label>Filter by Type</label>
                 <select

@@ -10,11 +10,12 @@ const { Pokemon, Types } = require('../db');
 //   nameUp: 'false',
 //   nameDown: 'false'
 router.get('/', async (req, res) => {
-    let { name, type, attackUp, attackDown, nameUp, nameDown, created, api } = req.query
-    // console.log('hola', name, type, attackUp, attackDown, nameUp, nameDown, created, api)
+    console.log(req.query)
+    let { name, typeFilter, order, created, api } = req.query
     try {
 
         if (created) {
+            console.log("created: ")
             const createdInDb = await Pokemon.findAll({ where: { createdDb: true } });
             if (!createdInDb.length) {
                 return res.send({ msg: "You haven't created any new pokemon yet" })
@@ -22,11 +23,13 @@ router.get('/', async (req, res) => {
             return res.send(createdInDb);
         }
         if (api) {
+            console.log("api: ",)
             const createdFromApi = await Pokemon.findAll({ where: { createdDb: false } });
             return res.send(createdFromApi);
         }
 
         if (name) {  //find by name
+            console.log("name: ")
             name = name.toLowerCase();
             const poke = await Pokemon.findOne({
                 where: { name: name },
@@ -40,40 +43,54 @@ router.get('/', async (req, res) => {
             else return res.status(404).send(`The pokemon "${name}" doesn't exist.`);
         }
 
-        if (type) { //Filtro de tipo -- Cierta duplicacion de esfuerzos ya que el filtro de tipos usa una variable distinta
-            const filterType = await Pokemon.findAll({
+        if (typeFilter !== "default" && typeFilter) { //Filtro de tipo -- Cierta duplicacion de esfuerzos ya que el filtro de tipos usa una variable distinta
+            console.log("type: ", typeFilter)
+            var filterType = await Pokemon.findAll({
                 include: {  //incluye el modelo Types
                     model: Types,
-                    where: { 'name': type }, // dentrro de la inclución filtro los que tienen el nombre que busco
+                    where: { 'name': typeFilter }, // dentrro de la inclución filtro los que tienen el nombre que busco
                     attributes: ['name'],
                     through: { attributes: [] }
                 },
             })
 
             if (filterType.length) { // Checkeo si encontró algo
-                let filterArray = [];
-                for (var i = 0; i < filterType.length; i++) { //busco una por una todas la coincidencias 
-                    let found = await Pokemon.findOne({  //el .map está sobrevalorado
-                        where: { id: filterType[i].id },
-                        include: {
-                            model: Types,
-                            attributes: ['name'],
-                            through: { attributes: [] }
-                        }
-                    })
-                    filterArray.push(found);
-                }
-                //Orden por ataque
-                if (attackUp) filterArray = filterArray.sort((a, b) => b.attack - a.attack)
-                //Orden descendente
-                if (attackDown) filterArray = filterArray.sort((a, b) => a.attack - b.attack)
-                // Alfabetico
-                if (nameUp) filterArray = filterArray.sort((a, b) => b.name.localeCompare(a.name))
-                // Alfabetico descendente
-                if (nameDown) filterArray = filterArray.sort((a, b) => a.name.localeCompare(b.name))
 
-                return res.send(filterArray);
+                // let filterArray = [];
+                // for (var i = 0; i < filterType.length; i++) { //busco una por una todas la coincidencias 
+                //     let found = await Pokemon.findOne({  //el .map está sobrevalorado
+                //         where: { id: filterType[i].id },
+                //         include: {
+                //             model: Types,
+                //             attributes: ['name'],
+                //             through: { attributes: [] }
+                //         }
+                //     })
+                //     filterArray.push(found);
+                // }
+                //Orden por ataque
+                // if (attackFilter === 'attackUp') filterArray = filterArray.sort((a, b) => b.attack - a.attack)
+                // //Orden descendente
+                // if (attackFilter === 'attackDown') filterArray = filterArray.sort((a, b) => a.attack - b.attack)
+                // // Alfabetico
+                // if (nameFilter === 'nameUp') filterArray = filterArray.sort((a, b) => b.name.localeCompare(a.name))
+                // // Alfabetico descendente
+                // if (nameFilter === 'nameDown') filterArray = filterArray.sort((a, b) => a.name.localeCompare(b.name))
+
+
+                //Orden por ataque
+                if (order === 'attackUp') filterType = filterType.sort((a, b) => b.attack - a.attack)
+                //Orden descendente
+                if (order === 'attackDown') filterType = filterType.sort((a, b) => a.attack - b.attack)
+                // Alfabetico
+                if (order === 'nameUp') filterType = filterType.sort((a, b) => b.name.localeCompare(a.name))
+                // Alfabetico descendente
+                if (order === 'nameDown') filterType = filterType.sort((a, b) => a.name.localeCompare(b.name))
+                // console.log(filterArray)
+                // return res.send(filterArray);
+                return res.send(filterType);
             }
+            return res.status(404).send({ msg: "This type of pokemon doesn't exist yet" })
         }
         var allPokeNoMods = await Pokemon.findAll({  // Find All No Type Filter
             include: {
@@ -84,14 +101,14 @@ router.get('/', async (req, res) => {
         })
 
         //Orden por ataque
-        if (attackUp) allPokeNoMods = allPokeNoMods.sort((a, b) => b.attack - a.attack);
+        if (order === 'attackUp') allPokeNoMods = allPokeNoMods.sort((a, b) => b.attack - a.attack);
         //Orden descendente
-        if (attackDown) allPokeNoMods = allPokeNoMods.sort((a, b) => a.attack - b.attack);
+        if (order === 'attackDown') allPokeNoMods = allPokeNoMods.sort((a, b) => a.attack - b.attack);
         // Orden Alfabetico
-        if (nameUp) allPokeNoMods = allPokeNoMods.sort((a, b) => b.name.localeCompare(a.name));
+        if (order === 'nameUp') allPokeNoMods = allPokeNoMods.sort((a, b) => b.name.localeCompare(a.name));
         // Orden Alfabetico descendente
-        if (nameDown) allPokeNoMods = allPokeNoMods.sort((a, b) => a.name.localeCompare(b.name));
-        console.log(allPokeNoMods[0].types)
+        if (order === 'nameDown') allPokeNoMods = allPokeNoMods.sort((a, b) => a.name.localeCompare(b.name));
+        // console.log(allPokeNoMods[0].types)
         res.send(allPokeNoMods); // return All
     } catch (err) {
         console.log("here be error", err.message);

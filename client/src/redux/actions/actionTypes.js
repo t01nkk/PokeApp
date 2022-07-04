@@ -72,11 +72,10 @@ export function filterByCreated(payload) {
     }
 }
 
-
-
 export function filterPokemons(payload) {
     return async function (dispatch) {
-        const filters = await axios.get(`${BASE_URL}/pokemon?type=${payload.type}&attackUp=${payload.attackUp}&attackDown=${payload.attackDown}&nameUp=${payload.nameUp}&nameDown=${payload.nameDown}`)
+        console.log(payload)
+        const filters = await axios.get(`${BASE_URL}/pokemon?typeFilter=${payload.typeFilter}&order=${payload.order}`)
 
         return dispatch({
             type: "FILTERS",
