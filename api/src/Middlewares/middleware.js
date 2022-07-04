@@ -87,10 +87,52 @@ const loadDb = async function () {
     await createFromApi();
 }
 
+const filters = async (typeFilter, orderBy) => {
+    console.log(orderBy)
+    try {
+        var filterType = await Pokemon.findAll({
+            include: {  //incluye el modelo Types
+                model: Types,
+                where: { 'name': typeFilter }, // dentrro de la inclución filtro los que tienen el nombre que busco
+                attributes: ['name'],
+                through: { attributes: [] }
+            },
+        })
+        if (filterType.length) { // Checkeo si encontró algo
+            if (orderBy) return setOrder(filterType, orderBy);
+            console.log("filterType")
+            return filterType
+        }
+    } catch (err) {
+        console.log(err.message)
+        throw new Error({ msg: err.message })
+    }
+}
+
+const setOrder = (pokemon, by) => {
+    switch (by) {
+        case "attackUp": {
+            return pokemon.sort((a, b) => b.attack - a.attack)
+        };
+        case "attackDown": {
+            return pokemon.sort((a, b) => a.attack - b.attack)
+        };
+        case "nameUp": {
+            return pokemon.sort((a, b) => a.name.localeCompare(b.name))
+        };
+        case "nameDown": {
+            return pokemon.sort((a, b) => b.name.localeCompare(a.name))
+        };
+        default: return pokemon;
+    }
+}
+
 
 
 
 module.exports = {
-    loadDb
+    loadDb,
+    setOrder,
+    filters
 };
 

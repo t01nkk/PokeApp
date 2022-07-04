@@ -2,6 +2,7 @@ import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useEffect, useState } from "react";
 import Pagination from "../../components/Pagination/Pagination";
+import notFoundImg from "../../resources/404-Page-Not-Found.png"
 import {
   fetchPokemons,
   fetchTypes,
@@ -48,13 +49,11 @@ export default function Home() {
   return (
     <div className="ContainerPrincipial">
       <div>
-        <div>
+        <div className="filters">
           <Filters />
-          <div className='searchBar'>
+          <div>
             <SearchBar />
           </div>
-        </div>
-        <div className="buttonPaginate" >
           <div className="botoncito">
             <button
               className="realodButton"
@@ -65,6 +64,8 @@ export default function Home() {
               Reload Pokemons
             </button>
           </div>
+        </div>
+        <div className="buttonPaginate" >
           <div className="divPaginado">
 
             <Pagination
@@ -92,7 +93,15 @@ export default function Home() {
                   />
                 </div>
               );
-            }) : <h1>Nothin' to show, you can create your pokemon <a href="/create" style={{ textDecoration: 'none', color: 'red' }}>here</a>!</h1>}
+            }) :
+            <div>
+              <img src={notFoundImg}>
+              </img>
+              <a href="/create" style={{ textDecoration: 'none', color: 'red' }}>
+                Create a pokemon here!
+              </a>!
+            </div>
+          }
         </div>
         <div>
           <Pagination
