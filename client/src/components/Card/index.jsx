@@ -1,12 +1,13 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import "./styles.css";
+import TypeIcon from "../TypeIcon/TypeIcon";
 
 export default function Card({ id, name, img, types }) {
   return (
     <div className="card">
       <div className="tittle">
-        <h2>{name}</h2>
+        <a>{name}</a>
       </div>
       <div className="imgContainer">
         <Link to={`/pokemons/${id}`} className="Links">
@@ -14,10 +15,8 @@ export default function Card({ id, name, img, types }) {
         </Link>
       </div>
       <div className="types">
-        <h2 >
-          {types && types[0].name}
-          {`${types && types[1] ? ` - ${types[1].name}` : ""}`}
-        </h2>
+        {types && <TypeIcon name={types[0].name} />}
+        {types && types[1] && <TypeIcon name={types[1].name} />}
       </div>
     </div>
   );

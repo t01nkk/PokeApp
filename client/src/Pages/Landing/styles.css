@@ -4,8 +4,8 @@
     align-items: center;
     /* background: rgb(255, 255, 255);
     background: radial-gradient(circle, #df9100 3%, rgba(35, 30, 31, 1) 23%, rgba(35, 30, 31, 1) 100%); */
-    background: rgb(35, 30, 31);
-    background: radial-gradient(circle, rgba(35, 30, 31, 1) 20%, rgba(78, 54, 18, 1) 22%, rgba(223, 145, 0, 1) 100%);
+    background: rgb(0, 0, 0);
+    background: radial-gradient(circle, rgba(0, 0, 0, 1) 0%, rgba(55, 121, 108, 1) 100%);
     /* background: rgb(35, 30, 31);
     background: radial-gradient(circle, rgba(35, 30, 31, 1) 20%, rgba(35, 30, 31, 1) 23%, rgba(223, 145, 0, 1) 100%); */
 

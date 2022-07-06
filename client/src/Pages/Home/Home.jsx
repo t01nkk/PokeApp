@@ -35,9 +35,7 @@ export default function Home() {
     dispatch(fetchTypes());
   }, [dispatch]);
 
-  function handleClick(e) {
-    dispatch(fetchPokemons());
-  }
+
 
   const currentPokemons = allPokes?.slice(
     indexOfFirstPokemon,
@@ -48,72 +46,43 @@ export default function Home() {
 
   return (
     <div className="ContainerPrincipial">
-      <div>
-        <div className="filters">
-          <Filters />
+      <Filters />
+      <div className="pokePosition">
+        {currentPokemons.length ?
+          // typeof currentPokemons[0] === 'string' ?
+          // <p>{currentPokemons[0]}</p> :
+          currentPokemons?.map((e, i) => {
+            return (
+              <div key={i}>
+                <Card
+                  id={e.id}
+                  name={e.name}
+                  img={e.img}
+                  types={e.types}
+                />
+              </div>
+            );
+          }) :
           <div>
-            <SearchBar />
+            <img src={notFoundImg}>
+            </img>
+            <a href="/create" style={{ textDecoration: 'none', color: 'red' }}>
+              Create a pokemon here!
+            </a>!
           </div>
-          <div className="botoncito">
-            <button
-              className="realodButton"
-              onClick={(e) => {
-                handleClick(e);
-              }}
-            >
-              Reload Pokemons
-            </button>
-          </div>
-        </div>
-        <div className="buttonPaginate" >
-          <div className="divPaginado">
-
-            <Pagination
-
-              pokemonsPerPage={pokemonsPerPage}
-              totalPokemons={allPokes.length}
-              paginate={paginate}
-            />
-          </div>
-        </div>
-
-
-        <div className="pokePosition">
-          {currentPokemons.length ?
-            // typeof currentPokemons[0] === 'string' ?
-            // <p>{currentPokemons[0]}</p> :
-            currentPokemons?.map((e, i) => {
-              return (
-                <div key={i}>
-                  <Card
-                    id={e.id}
-                    name={e.name}
-                    img={e.img}
-                    types={e.types}
-                  />
-                </div>
-              );
-            }) :
-            <div>
-              <img src={notFoundImg}>
-              </img>
-              <a href="/create" style={{ textDecoration: 'none', color: 'red' }}>
-                Create a pokemon here!
-              </a>!
-            </div>
-          }
-        </div>
-        <div>
-          <Pagination
-            key={allPokes.id}
-            pokemonsPerPage={pokemonsPerPage}
-            totalPokemons={allPokes.length}
-            paginate={paginate}
-          />
-        </div>
-
-
+        }
       </div>
+      <div>
+        <Pagination
+          key={allPokes.id}
+          pokemonsPerPage={pokemonsPerPage}
+          totalPokemons={allPokes.length}
+          paginate={paginate}
+        />
+      </div>
+
+
+
     </div>
   );
 }

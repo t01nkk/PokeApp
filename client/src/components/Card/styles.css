@@ -1,12 +1,12 @@
-.image {
-  height: 100px;
-}
+/* .image {
+  height: 20vh;
+} */
 
 .card {
-
-  border: rgba(0, 0, 0, 0.5) solid 1px;
-  background-color: rgba(252, 191, 61, 0.5);
-
+  /* border: rgba(0, 0, 0, 0.5) solid 1px; */
+  background-color: rgb(55, 121, 108);
+  /* background-color: rgba(252, 191, 61, 0.5); */
+  box-shadow: 0 1.5rem 4rem rgba(0, 0, 0, 0.45);
   margin: 15px;
   width: 15rem;
   text-decoration: none;
@@ -14,15 +14,19 @@
 }
 
 .card .image {
-  height: 100px;
+  height: 30vh;
   margin: auto;
   /* display: inline-block; */
 }
 
 .card .tittle {
   text-transform: capitalize;
+  font-weight: 1000;
+  height: 1rem;
 }
 
 .card .types {
-  text-transform: capitalize;
+  display: flex;
+  justify-content: center;
+  padding-top: 1rem;
 }

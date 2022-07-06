@@ -1,8 +1,8 @@
-.header {
+.searchBar-container {
     display: flex;
-    justify-content: center;
+
 }
 
-.header ul li a:hover {
-    background-color: #797979;
-}
+.searchBar-button {}
+
+.searchBar-input {}

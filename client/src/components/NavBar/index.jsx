@@ -4,8 +4,8 @@ import style from "./styles.module.css";
 import image from "../../resources/pokemonLogo.png";
 export const Navbar = () => {
   return (
-    <div>
-      <header className={style.header}>
+    <div className={style.navBar}>
+      <nav className={style.header}>
         <Link to="/" className={style.logo}>
           <img src={image} alt="" />
         </Link>
@@ -17,7 +17,7 @@ export const Navbar = () => {
             <Link to="/create">Create</Link>
           </li>
         </ul>
-      </header>
+      </nav>
     </div>
   );
 };

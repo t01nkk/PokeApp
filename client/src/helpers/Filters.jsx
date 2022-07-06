@@ -1,10 +1,15 @@
 import React from 'react'
 import {
+    fetchPokemons,
     filterPokemons,
     filterByCreated
 } from "../redux/actions/actionTypes";
 import { useSelector, useDispatch } from "react-redux";
 import { useEffect, useState } from "react";
+import TypeIcon from '../components/TypeIcon/TypeIcon';
+import './Filters.css'
+import { Link } from 'react-router-dom';
+import SearchBar from '../components/SearchBar';
 
 export default function Filters() {
     const allTypes = useSelector((state) => state.types);
@@ -14,6 +19,10 @@ export default function Filters() {
         typeFilter: "default",
         order: 'default'
     });
+
+    function handleClick(e) {
+        dispatch(fetchPokemons());
+    }
 
     function resetFilters() {
         setFilter({
@@ -66,31 +75,39 @@ export default function Filters() {
         if (Object.values(filter).find(e => e !== "default")) dispatch(filterPokemons(filter));
     }, [filter])
 
+
+
     return (
         <div className="filters">
-            <div >
-                <label>Order by</label>
-                <select onChange={(e) => handleFilters(e)} name="Order">
-                    <option value="Any" hidden={true}>Default</option>
-                    <option value="nameUp">Order A-Z</option>
-                    <option value="nameDown">Order Z-A</option>
-                    <option value="attackUp">Attack +</option>
-                    <option value="attackDown">Attack -</option>
-                </select>
+            <div className='type-container' >
+                {allTypes.map((type) => {
+                    return (
+                        <TypeIcon key={type.id} name={type.name} handleFilters={handleFilters} />
+                    )
+                })}
             </div>
-            <div>
-                <label>Filter by Type</label>
-                <select
-                    onChange={(e) => handleFilters(e)}
-                    name="type"
-                >
-                    <option value="All" hidden={true}>All </option>
-                    {allTypes.map((type) => {
-                        return <option value={type.name} key={type.id}>{type.name}</option>;
-                    })}
-                </select>
+            <div className='order-container'>
+                <div className='selector'>
+                    <select onChange={(e) => handleFilters(e)} name="Order">
+                        <option value="Any" hidden={true}>Order by</option>
+                        <option value="nameUp">Order A-Z</option>
+                        <option value="nameDown">Order Z-A</option>
+                        <option value="attackUp">Attack +</option>
+                        <option value="attackDown">Attack -</option>
+                    </select>
+                </div>
+                <div className="reload-container">
+                    <button
+                        className="realodButton"
+                        onClick={(e) => {
+                            handleClick(e);
+                        }}
+                    >
+                        Reload Pokemons
+                    </button>
+                </div>
+                <SearchBar />
             </div>
-
         </div>
     )
 }

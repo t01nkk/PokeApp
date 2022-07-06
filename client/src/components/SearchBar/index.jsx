@@ -30,13 +30,14 @@ export default function SearchBar() {
   }
 
   return (
-    <div className={styles.header}>
+    <div className='searchBar-container'>
       <input
+        className='searchBar-input'
         type="text"
         placeholder="Search.."
         onChange={(e) => handleInputChange(e)}
       />
-      <button className={styles.button} type="submit" onClick={(e) => handleSubmit(e)
+      <button className='searchBar-button' type="submit" onClick={(e) => handleSubmit(e)
       }>
         Search
       </button>

@@ -49,7 +49,9 @@
 
 
 body {
-  background-color: #df9100;
+  /* background-image: linear-gradient(to right bottom, #37796C, #000000); */
+  background: rgb(55, 121, 108);
+  background: radial-gradient(circle, rgba(55, 121, 108, 0.9360119047619048) 75%, rgba(0, 0, 0, 1) 100%);
 }
 
 .Links {

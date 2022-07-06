@@ -44,3 +44,9 @@
 .header ul li a:hover {
   background-color: #797979;
 }
+
+.navBar {
+  /* background-color: #e9002f; */
+  position: relative;
+  height: 3rem;
+}
