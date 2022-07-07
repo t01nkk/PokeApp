@@ -1,19 +1,16 @@
 import React from 'react'
 import {
     fetchPokemons,
-    filterPokemons,
-    filterByCreated
+    filterPokemons
 } from "../redux/actions/actionTypes";
 import { useSelector, useDispatch } from "react-redux";
 import { useEffect, useState } from "react";
 import TypeIcon from '../components/TypeIcon/TypeIcon';
 import './Filters.css'
-import { Link } from 'react-router-dom';
 import SearchBar from '../components/SearchBar';
 
 export default function Filters() {
     const allTypes = useSelector((state) => state.types);
-    const allPokes = useSelector((state) => state.pokemons);
     const dispatch = useDispatch();
     const [filter, setFilter] = useState({
         typeFilter: "default",
@@ -22,13 +19,6 @@ export default function Filters() {
 
     function handleClick(e) {
         dispatch(fetchPokemons());
-    }
-
-    function resetFilters() {
-        setFilter({
-            typeFilter: 'default',
-            order: 'default',
-        })
     }
 
     function handleFilters(event) {

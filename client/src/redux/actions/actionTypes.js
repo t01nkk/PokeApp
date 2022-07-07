@@ -1,5 +1,4 @@
 import axios from "axios";
-import { useEffect } from "react";
 const BASE_URL = process.env.REACT_APP_DOMAIN;
 
 export function fetchPokemons() {
@@ -74,7 +73,6 @@ export function filterByCreated(payload) {
 
 export function filterPokemons(payload) {
     return async function (dispatch) {
-        console.log(payload)
         const filters = await axios.get(`${BASE_URL}/pokemon?typeFilter=${payload.typeFilter}&order=${payload.order}`)
 
         return dispatch({

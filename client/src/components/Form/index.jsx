@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import { postPokemon, fetchTypes } from "../../redux/actions/actionTypes";
 import { useDispatch, useSelector } from "react-redux";
-import style from "./index.css";
+import TypeIcon from "../TypeIcon/TypeIcon";
 
 export default function Form() {
   const dispatch = useDispatch();
@@ -25,7 +25,7 @@ export default function Form() {
     event.preventDefault();
     if (Object.values(errors).length) {
       let message = ''
-      console.log(message);
+      console.log(message)
       let err = Object.values(errors)
       return alert(message = err.map(e => e + '\n'))
     } else {
@@ -45,7 +45,7 @@ export default function Form() {
         weight: "",
         types: [],
       });
-      // history.push("/pokemons");
+      history.push("/pokemons");
     }
   }
 
@@ -54,7 +54,6 @@ export default function Form() {
   }, [dispatch]);
 
   function handleChange(e) {
-    console.log(input)
     setInput({
       ...input,
       [e.target.name]: e.target.value,
@@ -124,9 +123,9 @@ export default function Form() {
     return errors;
   }
   return (
-    <div className="grid">
-      <h1>Create your pokemon!</h1>
-      <form onSubmit={(e) => handleSubmit(e)} className={style.form}>
+    <div className="form-container">
+      <p className="form-tittle">Create your pokemon!</p>
+      <form onSubmit={(e) => handleSubmit(e)} className='form-layout'>
         <div>
           <label>Name: </label>
           <input
@@ -224,11 +223,12 @@ export default function Form() {
             );
           })}
         </select>
-        <ul>
-          <p>
-            Types you chose: {input.types.map((e) => e + ",")}
-          </p>
-        </ul>
+        <div className="form-types">
+          <ul>
+            <p>Types you chose:</p>
+            {input.types.map((e) => (<TypeIcon name={e} />))}
+          </ul>
+        </div>
         <button type="submit" >Create!</button>
       </form>
     </div>

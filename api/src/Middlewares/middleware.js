@@ -35,6 +35,9 @@ const populateTypes = async function () {
             const api = await axios.get('https://pokeapi.co/api/v2/type');
             const apiTypes = api.data.results.map(e => e.name)
             for (let i = 0; i < apiTypes.length; i++) {
+                if (apiTypes[i] == "shadow" || apiTypes[i] == "unknown") {
+                    continue;
+                }
                 Types.findOrCreate({
                     where: { name: apiTypes[i] }
                 })
@@ -52,7 +55,6 @@ const createFromApi = async function () {
         const count = await Pokemon.count(); //cuento cuantos hay en la base de datos
         if (pokemonsInDb.length === count) { // comparo, si son iguales, quiere decir que en la base de datos solo hay pokemones creados por el usuario
             const apiPoke = await getPoke();
-            // console.log("ACA ESTA EL POKE", apiPoke[apiPoke.length - 1]);
             for (var i = 0; i < apiPoke.length; i++) {
                 let newPoke = await Pokemon.create({
                     idPoke: apiPoke[i].idPoke,
@@ -88,19 +90,16 @@ const loadDb = async function () {
 }
 
 const filters = async (typeFilter, orderBy) => {
-    console.log(orderBy)
     try {
         var filterType = await Pokemon.findAll({
-            include: {  //incluye el modelo Types
+            include: {
                 model: Types,
-                where: { 'name': typeFilter }, // dentrro de la inclución filtro los que tienen el nombre que busco
-                attributes: ['name'],
-                through: { attributes: [] }
+                where: { 'name': typeFilter },
+                attributes: ['name']
             },
         })
         if (filterType.length) { // Checkeo si encontró algo
             if (orderBy) return setOrder(filterType, orderBy);
-            console.log("filterType")
             return filterType
         }
     } catch (err) {

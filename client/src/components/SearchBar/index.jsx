@@ -2,8 +2,6 @@ import React from "react";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { findByName } from "../../redux/actions/actionTypes";
-import img from '../../resources/404-Page-Not-Found.png'
-import styles from "./styles.css"
 
 export default function SearchBar() {
   const dispatch = useDispatch();

@@ -11,12 +11,10 @@ const { setOrder, filters } = require('../Middlewares/middleware')
 //   nameUp: 'false',
 //   nameDown: 'false'
 router.get('/', async (req, res) => {
-    console.log(req.query)
     let { name, typeFilter, order, created } = req.query
     try {
 
         if (created !== 'default' && created == true) {
-            console.log("created: ")
             const createdInDb = await Pokemon.findAll({ where: { createdDb: created } });
             if (!createdInDb.length) {
                 return res.send({ msg: "You haven't created any new pokemon yet" })
@@ -25,7 +23,6 @@ router.get('/', async (req, res) => {
         }
 
         if (name && name !== '') {  //find by name
-            console.log("name: ")
             name = name.toLowerCase();
             const poke = await Pokemon.findOne({
                 where: { name: name },
@@ -115,7 +112,6 @@ router.post('/create', async (req, res) => {
 router.put('/modify/:id', async (req, res) => {
     let { id } = req.params;
     let { name, hp, attack, defense, speed, height, weight, img } = req.body;
-    console.log(name, hp, attack, defense, speed, height, weight, img)
     try {
         let find = await Pokemon.findOne({ where: { id: id } })
         if (find) {

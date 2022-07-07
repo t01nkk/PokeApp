@@ -5,13 +5,25 @@ label {
   transition: all 0.6s;
 }
 
-.grid {
+.form-container {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.form-tittle {
+  display: flex;
+
+}
+
+.form-types {
+  background-color: aqua;
+  margin: 0 auto
+}
+
+.form-layout {
   display: grid;
   place-items: center;
-  padding-top: 10%;
 }
 
-.errors {
-
-  place-items: right;
-}
+.errors {}

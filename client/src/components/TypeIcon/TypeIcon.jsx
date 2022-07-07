@@ -46,14 +46,17 @@ export default function TypeIcon({ name, handleFilters }) {
     }
     return (
         <>
-            <input
-                type='image'
-                src={types[name]}
-                alt={`${name}`}
-                className='type-img'
-                value={name}
-                onClick={handleFilters ? (e) => { console.log(e.target); handleFilters(e) } : null}
-            />
+            {handleFilters ?
+                (<input
+                    type='image'
+                    src={types[name]}
+                    alt={`${name}`}
+                    className='type-img'
+                    value={name}
+                    onClick={handleFilters ? (e) => { handleFilters(e) } : null}
+                />) :
+                (<img className='type-img' src={types[name]} alt={`${name}`} />)
+            }
         </>
     )
 }

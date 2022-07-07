@@ -5,15 +5,10 @@ import Pagination from "../../components/Pagination/Pagination";
 import notFoundImg from "../../resources/404-Page-Not-Found.png"
 import {
   fetchPokemons,
-  fetchTypes,
-  // filterPokemonsByType,
-  // orderPokemon,
-  filterPokemons,
-  filterByCreated
+  fetchTypes
 } from "../../redux/actions/actionTypes";
 import Card from "../../components/Card";
 import "./styles.css";
-import SearchBar from "../../components/SearchBar";
 import Filters from "../../helpers/Filters"
 
 export default function Home() {
@@ -64,8 +59,7 @@ export default function Home() {
             );
           }) :
           <div>
-            <img src={notFoundImg}>
-            </img>
+            <img src={notFoundImg} alt='Not Found' />
             <a href="/create" style={{ textDecoration: 'none', color: 'red' }}>
               Create a pokemon here!
             </a>!

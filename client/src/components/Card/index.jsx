@@ -7,10 +7,10 @@ export default function Card({ id, name, img, types }) {
   return (
     <div className="card">
       <div className="tittle">
-        <a>{name}</a>
+        <p>{name}</p>
       </div>
       <div className="imgContainer">
-        <Link to={`/pokemons/${id}`} className="Links">
+        <Link to={`/pokemons/${id}`}>
           <img src={img} alt={`${name}`} className="image" />
         </Link>
       </div>

@@ -1,9 +1,7 @@
-/* .image {
-  height: 20vh;
-} */
-
 .card {
   /* border: rgba(0, 0, 0, 0.5) solid 1px; */
+  border-radius: 3%;
+  opacity: 0.8;
   background-color: rgb(55, 121, 108);
   /* background-color: rgba(252, 191, 61, 0.5); */
   box-shadow: 0 1.5rem 4rem rgba(0, 0, 0, 0.45);
@@ -13,9 +11,14 @@
   text-align: center;
 }
 
+.card :hover {
+  transform: scale(1.1)
+}
+
 .card .image {
   height: 30vh;
   margin: auto;
+  opacity: 1.5;
   /* display: inline-block; */
 }
 
