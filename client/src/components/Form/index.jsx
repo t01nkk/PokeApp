@@ -3,6 +3,7 @@ import { useHistory } from "react-router-dom";
 import { postPokemon, fetchTypes } from "../../redux/actions/actionTypes";
 import { useDispatch, useSelector } from "react-redux";
 import TypeIcon from "../TypeIcon/TypeIcon";
+import './index.css'
 
 export default function Form() {
   const dispatch = useDispatch();
@@ -17,6 +18,7 @@ export default function Form() {
     speed: "",
     height: "",
     weight: "",
+    image: "",
     types: [],
   });
   const [errors, setErrors] = useState("");
@@ -29,7 +31,7 @@ export default function Form() {
       let err = Object.values(errors)
       return alert(message = err.map(e => e + '\n'))
     } else {
-      const { name, hp, attack, defense, speed, height, weight, types } = input;
+      const { name, hp, attack, defense, speed, image, height, weight, types } = input;
       if (name && hp && attack && defense && speed && height && weight && types.length !== 0) {
         dispatch(postPokemon(input));
 
@@ -43,6 +45,7 @@ export default function Form() {
         speed: "",
         height: "",
         weight: "",
+        image: "",
         types: [],
       });
       history.push("/pokemons");
@@ -68,8 +71,14 @@ export default function Form() {
 
   }
 
-  function handleSelect(event) {
+  function handleClearTypes(event) {
+    setInput({
+      ...input,
+      types: []
+    })
+  }
 
+  function handleSelect(event) {
     setInput({
       ...input,
       types: [...input.types, event.target.value],
@@ -94,44 +103,46 @@ export default function Form() {
     if (!input.name) {
       errors.name = "Please input a name";
 
-    } else if (!tisString(input.name)) errors.name = "The field name should contain characters Only!";
+    } else if (!tisString(input.name)) errors.name = "characters only";
 
-    else if (!input.hp) errors.hp = "Tell your pokemon how much health it has";
+    else if (!input.hp) errors.hp = "missing value";
 
-    else if (!tisNumber(input.hp)) errors.hp = "The field Health should contain Numbers Only!";
+    else if (!tisNumber(input.hp)) errors.hp = "numbers only";
 
-    else if (!input.attack) errors.attack = "You need an attack value for your pokemon";
+    else if (!input.attack) errors.attack = "missing value";
 
-    else if (!tisNumber(input.attack)) errors.attack = "The field Attack should contain Numbers Only!";
+    else if (!tisNumber(input.attack)) errors.attack = "numbers only";
 
-    else if (!input.defense) errors.defense = "Set a value for Defense";
+    else if (!input.defense) errors.defense = "missing value";
 
-    else if (!tisNumber(input.defense)) errors.defense = "The field Defense should contain Numbers Only!";
+    else if (!tisNumber(input.defense)) errors.defense = "numbers only";
 
-    else if (!input.speed) errors.speed = "Set a speed for your pokemon";
+    else if (!input.speed) errors.speed = "missing value";
 
-    else if (!tisNumber(input.speed)) errors.speed = "The field Speed should contain Numbers Only!";
+    else if (!tisNumber(input.speed)) errors.speed = "numbers only";
 
-    else if (!input.weight) errors.weight = "Set a Weight value to your pokemon";
+    else if (!input.weight) errors.weight = "missing value";
 
-    else if (!tisNumber(input.weight)) errors.weight = "The field Weight should contain Numbers Only!";
+    else if (!tisNumber(input.weight)) errors.weight = "numbers only";
 
-    else if (!input.height) errors.height = "Set a height for your pokemon";
+    else if (!input.height) errors.height = "missing value";
 
-    else if (!tisNumber(input.height)) errors.height = "This field should contain Numbers Only!";
+    else if (!tisNumber(input.height)) errors.height = "numbers only";
     // if (input.types.length === 0) errors.types = "You must choose a Type for your pokemon!!"
     return errors;
   }
   return (
     <div className="form-container">
-      <p className="form-tittle">Create your pokemon!</p>
-      <form onSubmit={(e) => handleSubmit(e)} className='form-layout'>
-        <div>
-          <label>Name: </label>
+      {/* <p className="form-tittle">Create your pokemon!</p> */}
+      <form
+        onSubmit={(e) => handleSubmit(e)}
+        className='form-layout' >
+        <div >
           <input
+            className='generic-input'
             required
             type="text"
-            placeholder="Give me a name!"
+            placeholder="Name"
             name="name"
             value={input.name}
             onChange={(e) => handleChange(e)}
@@ -140,10 +151,10 @@ export default function Form() {
         </div>
 
         <div>
-          <label>Health: </label>
           <input
+            className='generic-input'
             type="number"
-            placeholder="Type a number"
+            placeholder="Health"
             name="hp"
             value={input.hp}
             onChange={(e) => handleChange(e)}
@@ -152,10 +163,10 @@ export default function Form() {
         </div>
 
         <div>
-          <label>Attack: </label>
           <input
+            className='generic-input'
             type="number"
-            placeholder="Type a number"
+            placeholder="Attack"
             name="attack"
             value={input.attack}
             onChange={(e) => handleChange(e)}
@@ -164,10 +175,10 @@ export default function Form() {
         </div>
 
         <div>
-          <label>Defense: </label>
           <input
+            className='generic-input'
             type="number"
-            placeholder="Type a number"
+            placeholder="Defense"
             name="defense"
             value={input.defense}
             onChange={(e) => handleChange(e)}
@@ -176,10 +187,10 @@ export default function Form() {
         </div>
 
         <div>
-          <label>Speed: </label>
           <input
+            className='generic-input'
             type="number"
-            placeholder="Type a number"
+            placeholder="Speed"
             name="speed"
             value={input.speed}
             onChange={(e) => handleChange(e)}
@@ -188,10 +199,10 @@ export default function Form() {
         </div>
 
         <div>
-          <label>Height: </label>
           <input
+            className='generic-input'
             type="number"
-            placeholder="Type a number"
+            placeholder="Height"
             name="height"
             value={input.height}
             onChange={(e) => handleChange(e)}
@@ -199,18 +210,29 @@ export default function Form() {
           {errors.height && <p className="errors">{errors.height}</p>}
         </div>
         <div>
-          <label>Weight: </label>
           <input
+            className='generic-input'
             type="number"
-            placeholder="Type a number"
+            placeholder="Weight"
             name="weight"
             value={input.weight}
             onChange={(e) => handleChange(e)}
           />
-          {errors.weight && <p className="errors">{errors.weight}</p>}
+          <div>
+            {errors.weight && <p className="errors">{errors.weight}</p>}
+
+          </div>
         </div>
+        <input
+          className="generic-input"
+          type="text"
+          name="image"
+          placeholder={("pick an image")}
+          onChange={(e) => handleChange(e)}
+          value={input.image}
+        />
         <select
-          className="typeList"
+          className='generic-input'
           onChange={(e) => {
             handleSelect(e);
           }}
@@ -223,13 +245,24 @@ export default function Form() {
             );
           })}
         </select>
+
+
+
         <div className="form-types">
           <ul>
-            <p>Types you chose:</p>
+            {/* <p>Types you chose:</p> */}
             {input.types.map((e) => (<TypeIcon name={e} />))}
           </ul>
         </div>
-        <button type="submit" >Create!</button>
+        <ul>
+          <li>
+
+            <a href={null} onClick={handleClearTypes} >Clear</a>
+          </li>
+          <li>
+            <button className="realodButton" type="submit" >Create!</button>
+          </li>
+        </ul>
       </form>
     </div>
   );

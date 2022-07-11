@@ -1,4 +1,5 @@
 const router = require('express').Router();
+const { Op } = require('sequelize');
 const { Pokemon, Types } = require('../db');
 const { setOrder, filters } = require('../Middlewares/middleware')
 
@@ -23,16 +24,17 @@ router.get('/', async (req, res) => {
         }
 
         if (name && name !== '') {  //find by name
-            name = name.toLowerCase();
-            const poke = await Pokemon.findOne({
-                where: { name: name },
+            const poke = await Pokemon.findAll({
+                where: {
+                    name: { [Op.iLike]: `%${name}%` }
+                },
                 include: {
                     model: Types,
                     attributes: ['name'],
                     through: { attributes: [], }
                 }
             })
-            if (poke) return res.status(200).send(poke);
+            if (poke?.length) return res.status(200).send(poke);
             else return res.status(404).send(`The pokemon "${name}" doesn't exist.`);
         }
 
@@ -64,7 +66,7 @@ router.get('/', async (req, res) => {
 
 router.post('/create', async (req, res) => {
     const {
-        name, hp, attack, defense, speed, height, weight, img
+        name, hp, attack, defense, speed, height, weight, image
     } = req.body;
     if (!name || !hp || !attack || !defense || !speed || !height || !weight) {
         return res.status(400).json({
@@ -88,7 +90,7 @@ router.post('/create', async (req, res) => {
             height: req.body.height,
             weight: req.body.weight,
             createdDb: true,
-            img: img ? img : "https://media.giphy.com/media/DRfu7BT8ZK1uo/giphy.gif"
+            img: image ? image : "https://media.giphy.com/media/DRfu7BT8ZK1uo/giphy.gif"
         });
         let typeDb = await Types.findAll({ where: { name: arrType[0].name } })
         newPoke.addType(typeDb);

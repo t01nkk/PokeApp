@@ -1,8 +1,56 @@
 .searchBar-container {
     display: flex;
-
+    justify-content: center;
 }
 
-.searchBar-button {}
+/* .sugestion-div {
 
-.searchBar-input {}
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    background-color: aliceblue;
+}
+
+.sugestion-li {
+    background-color: #000000;
+    display: flex;
+    justify-content: flex-start;
+    padding-right: 5%;
+}
+
+.sugestion-li:hover {
+    background-color: #0e6eff;
+    color: rgb(0, 0, 0, 0.889);
+    cursor: pointer;
+
+} */
+
+
+.sugestion-div {
+    position: absolute;
+    background-color: white;
+    z-index: 1;
+    max-height: 360px;
+    width: auto;
+    /* top: 40px; */
+    /* overflow-y: scroll; */
+    /* scrollbar-color: rgb(233, 233, 233) rgb(255, 255, 255);
+    scrollbar-width: thin; */
+}
+
+.sugestion-ul {
+    list-style-type: none;
+    padding-left: 0px;
+}
+
+.sugestion-li {
+    padding-left: 5px;
+    margin: 15px 0;
+    height: auto;
+}
+
+.sugestion-li:hover {
+    /* background-color: rgb(0, 0, 0, 0.889); */
+    color: #f0b479;
+    cursor: pointer;
+}

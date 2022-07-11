@@ -42,6 +42,7 @@
 }
 
 .header ul li a:hover {
+  cursor: pointer;
   background-color: #797979;
 }
 

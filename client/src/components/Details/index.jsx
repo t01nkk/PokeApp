@@ -21,7 +21,11 @@ export default function Details(props) {
           <p className="pokemon-name">{pokemon.name}</p>
           <p className="pokemon-id">ID: {pokemon.idPoke ? pokemon.idPoke : pokemon.id}</p>
         </div>
-        <img src={pokemon.img} alt={`${pokemon.name}`} className='detail-image' />
+        <br />
+        <div >
+          <img className='detail-image' src={pokemon.img} alt={`${pokemon.name}`} />
+
+        </div>
       </div>
       <div className="detail-data">
         <p>Health Points {pokemon.hp}</p>

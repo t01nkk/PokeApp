@@ -2,25 +2,7 @@
     margin: 0 6rem;
 } */
 
-.realodButton {
-    min-width: 130px;
-    height: 40px;
-    color: #fff;
-    padding: 5px 10px;
-    font-weight: bold;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    display: inline-block;
-    outline: none;
-    border-radius: 5px;
-    border: none;
-    background-color: #343a40;
-}
 
-.realodButton:hover {
-    background-color: #c4c4c4;
-    color: #8d7575
-}
 
 .titulo {
     display: grid;

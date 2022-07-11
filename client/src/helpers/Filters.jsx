@@ -18,6 +18,10 @@ export default function Filters() {
     });
 
     function handleClick(e) {
+        setFilter({
+            typeFilter: "default",
+            order: 'default'
+        })
         dispatch(fetchPokemons());
     }
 

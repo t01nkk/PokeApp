@@ -10,6 +10,7 @@ import {
 import Card from "../../components/Card";
 import "./styles.css";
 import Filters from "../../helpers/Filters"
+import Form from "../../components/Form";
 
 export default function Home() {
   const dispatch = useDispatch();
@@ -18,6 +19,7 @@ export default function Home() {
   const [pokemonsPerPage] = useState(50);
   const indexOfLastPokemon = currentPage * pokemonsPerPage;
   const indexOfFirstPokemon = indexOfLastPokemon - pokemonsPerPage;
+
 
   useEffect(() => {
     //POKEMONS
@@ -30,8 +32,6 @@ export default function Home() {
     dispatch(fetchTypes());
   }, [dispatch]);
 
-
-
   const currentPokemons = allPokes?.slice(
     indexOfFirstPokemon,
     indexOfLastPokemon
@@ -42,6 +42,8 @@ export default function Home() {
   return (
     <div className="ContainerPrincipial">
       <Filters />
+      {/* <button className="genericButton">Click me!</button> */}
+
       <div className="pokePosition">
         {currentPokemons.length ?
           // typeof currentPokemons[0] === 'string' ?
@@ -60,9 +62,6 @@ export default function Home() {
           }) :
           <div>
             <img src={notFoundImg} alt='Not Found' />
-            <a href="/create" style={{ textDecoration: 'none', color: 'red' }}>
-              Create a pokemon here!
-            </a>!
           </div>
         }
       </div>
@@ -77,6 +76,6 @@ export default function Home() {
 
 
 
-    </div>
+    </div >
   );
 }

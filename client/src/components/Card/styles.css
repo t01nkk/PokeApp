@@ -1,24 +1,30 @@
 .card {
   /* border: rgba(0, 0, 0, 0.5) solid 1px; */
   border-radius: 3%;
-  opacity: 0.8;
+  opacity: 0.7;
   background-color: rgb(55, 121, 108);
   /* background-color: rgba(252, 191, 61, 0.5); */
   box-shadow: 0 1.5rem 4rem rgba(0, 0, 0, 0.45);
   margin: 15px;
   width: 15rem;
+  height: 17rem;
   text-decoration: none;
   text-align: center;
+
 }
 
 .card :hover {
-  transform: scale(1.1)
+  transform: scale(1.1);
+  opacity: 1;
 }
 
 .card .image {
-  height: 30vh;
-  margin: auto;
+  max-height: 24vh;
+  max-width: 28vh;
+  /* height: 30vh; */
+  margin: 0 auto;
   opacity: 1.5;
+  border-radius: 5%;
   /* display: inline-block; */
 }
 

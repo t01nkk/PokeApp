@@ -6,20 +6,6 @@
 }
 
 
-.App {
-  text-align: center;
-}
-
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
 
 .App-header {
   background-color: #282c34;
@@ -37,16 +23,6 @@
   text-decoration: none;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-
-  to {
-    transform: rotate(360deg);
-  }
-}
-
 
 body {
   /* background-image: linear-gradient(to right bottom, #37796C, #000000); */
@@ -58,3 +34,54 @@ body {
   text-decoration: inherit;
   color: inherit;
 }
+
+/* .genericButton {
+  background-color: #231E1F;
+  padding: 6px 20px;
+  color: #ffffff;
+  border-radius: 5px;
+  font-weight: 500;
+}
+
+.genericButton:hover {
+  background-color: #797979;
+  color: #231E1F;
+} */
+
+.selector {
+  /* min-width: 130px; */
+  height: 40px;
+  border-radius: 5px;
+}
+
+.realodButton {
+  min-width: 130px;
+  height: 40px;
+  color: #fff;
+  padding: 5px 10px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: inline-block;
+  outline: none;
+  border-radius: 5px;
+  border: none;
+  background-color: #343a40;
+}
+
+.realodButton:hover {
+  background-color: #c4c4c4;
+  color: #8d7575
+}
+
+.generic-input {
+  border: none;
+  border-radius: 3%;
+  max-width: 10rem;
+  font-size: calc(3px + 2vmin);
+  color: #282c34;
+}
+
+/* .generic-input:hover{
+  transform:
+} */

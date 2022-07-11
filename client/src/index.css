@@ -14,7 +14,8 @@ code {
 
 p.errors {
   color: red;
-  font-size: 15px
+  font-size: 90%;
+  font-weight: 500;
 }
 
 /* input.errors {

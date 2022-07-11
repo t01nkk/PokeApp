@@ -2,9 +2,11 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    margin: 10px auto;
+    margin: 2rem auto;
     border: rgba(0, 0, 0, 0.5) solid 1px;
     border-radius: 3%;
+    background-color: black;
+    color: aliceblue;
     opacity: 0.8;
     width: 50rem;
     /* padding-top: 10rem; */
@@ -18,16 +20,30 @@
     transform: scale(1.1)
 } */
 
-.detail-tittle {
+
+
+.tittle-image-pos {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.tittle-image-pos .detail-tittle {
     text-transform: capitalize;
+    /* background-color: aliceblue; */
     size: 1vh;
     font-weight: 1000;
     height: 1rem;
     text-align: center;
 }
 
-.detail-image {
-    padding-top: 4rem;
+.tittle-image-pos .detail-image {
+    border-radius: 5%;
+    padding: 3rem;
+    /* padding-top: 4rem; */
+    margin: 0 auto;
+    max-block-size: 30rem;
+    max-width: 30rem;
 }
 
 .detail-data {
@@ -36,8 +52,14 @@
     font-weight: 1000;
 }
 
-.tittle-image-pos {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-}
+
+/* <div className="tittle-image-pos">
+        <div className="detail-tittle">
+          <p className="pokemon-name">{pokemon.name}</p>
+          <p className="pokemon-id">ID: {pokemon.idPoke ? pokemon.idPoke : pokemon.id}</p>
+        </div>
+        <div className='detail-image'>
+          <img src={pokemon.img} alt={`${pokemon.name}`} />
+
+        </div>
+      </div> */
