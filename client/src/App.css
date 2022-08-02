@@ -85,3 +85,34 @@ body {
 /* .generic-input:hover{
   transform:
 } */
+
+.header .logo img {
+  width: 5em;
+  height: 4em;
+  padding-left: -40%;
+  padding-top: 5%;
+}
+
+.header ul {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.header ul li {
+  list-style: none;
+  margin-left: 5px;
+}
+
+.header ul li a {
+  text-decoration: none;
+  padding: 6px 20px;
+  color: #ffffff;
+  border-radius: 5px;
+  font-weight: 500;
+}
+
+.header ul li a:hover {
+  cursor: pointer;
+  background-color: #797979;
+}

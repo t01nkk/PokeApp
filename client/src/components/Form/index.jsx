@@ -249,20 +249,12 @@ export default function Form() {
 
 
         <div className="form-types">
-          <ul>
-            {/* <p>Types you chose:</p> */}
-            {input.types.map((e) => (<TypeIcon name={e} />))}
-          </ul>
+          {input.types.map((e) => (<TypeIcon name={e} />))}
         </div>
-        <ul>
-          <li>
-
-            <a href={null} onClick={handleClearTypes} >Clear</a>
-          </li>
-          <li>
-            <button className="realodButton" type="submit" >Create!</button>
-          </li>
-        </ul>
+        <div className="button-container">
+          <button className="realodButton" href={null} onClick={handleClearTypes} >Clear</button>
+          <button className="realodButton" type="submit" >Create!</button>
+        </div>
       </form>
     </div>
   );

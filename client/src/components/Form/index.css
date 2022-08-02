@@ -1,15 +1,33 @@
-/* .form-container {
+.form-container {
+  font-weight: 1000;
+  color: rgba(165, 160, 160, 0.993);
+  background-color: rgb(0, 0, 0);
+  opacity: 0.9;
+  width: calc(100% + 100px);
+  /* width: 150%; */
+  height: 100vh;
+  border-right: 1px solid var(--border);
   display: flex;
+  flex-flow: row wrap;
   justify-content: center;
-  flex-direction: column;
-  margin: 0 auto;
-} */
+  box-shadow: rgba(0, 0, 0, 0.7) 0px 0px 30px 0px;
+  border-radius: 3%;
+  overflow-y: scroll;
+  scrollbar-color: rgb(233, 233, 233) rgb(255, 255, 255);
+  position: relative;
+  bottom: -50vh;
+  /* right: 200% */
+}
 
-
-
-/* .form-types {
-  display: flex;
-  margin: 0 auto
+/* .form-container :after {
+  position: absolute;
+  top: 0px;
+  left: 300px;
+  width: calc(100% - 300px);
+  height: 100%;
+  padding-left: 2.5%;
+  padding-right: 2.5%;
+  transition: width 200ms ease 0s, left 200ms ease 0s, right 200ms ease 0s;
 } */
 
 .form-layout {
@@ -19,9 +37,10 @@
   margin: -2rem auto;
   padding-top: 1rem;
   padding-bottom: 4rem;
+
   /* flex-wrap: wrap;
-  margin: 0 auto; */
-  /* justify-content: center; */
+  margin: 0 auto;
+  justify-content: center; */
 }
 
 .form-submit {
@@ -36,31 +55,15 @@
   background-color: #797979;
 }
 
-.form-container {
-  font-weight: 1000;
-  color: rgba(165, 160, 160, 0.993);
-  background-color: rgb(0, 0, 0);
-  opacity: 0.9;
-  position: absolute;
-  width: 30%;
-  height: 100vh;
-  border-right: 1px solid var(--border);
+
+
+.form-types {
+  background-color: aqua;
   display: flex;
-  flex-flow: row wrap;
-  justify-content: center;
-  box-shadow: rgba(0, 0, 0, 0.7) 0px 0px 30px 0px;
-  border-radius: 3%;
-  overflow-y: scroll;
-  scrollbar-color: rgb(233, 233, 233) rgb(255, 255, 255);
+  justify-content: flex-start;
+  align-content: center;
 }
 
-/* .form-container :after {
-  position: absolute;
-  top: 0px;
-  left: 300px;
-  width: calc(100% - 300px);
-  height: 100%;
-  padding-left: 2.5%;
-  padding-right: 2.5%;
-  transition: width 200ms ease 0s, left 200ms ease 0s, right 200ms ease 0s;
+/* .type-container {
+  background-color: aqua;
 } */

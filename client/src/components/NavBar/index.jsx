@@ -17,15 +17,16 @@ export const Navbar = () => {
         <Link to="/pokemons" className={style.logo}>
           <img src={image} alt="" />
         </Link>
-        <ul>
-          <li>
-            <a
+        <ul className={style.ulnkContainer}>
+          <li className={style.liContainer}>
+            <button
+              className={style.aContainer}
               href={null}
               onClick={() => setOpen(!open)}
-              onBlur={() => {
-                setTimeout(() => setOpen(!open), 200)
-              }}
-            >Create a pokemon</a>
+            // onBlur={() => {
+            //   setTimeout(() => setOpen(!open), 200)
+            // }}
+            >Create a pokemon</button>
             {open && <Form />}
           </li>
           {/* <li>

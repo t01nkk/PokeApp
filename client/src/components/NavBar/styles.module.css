@@ -15,6 +15,12 @@
   box-shadow: 10px 10px 40px 10px rgba(33, 33, 33, 0.35);
 }
 
+.navBar {
+  /* background-color: #e9002f; */
+  position: relative;
+  height: 3rem;
+}
+
 .header .logo img {
   width: 5em;
   height: 4em;
@@ -22,18 +28,19 @@
   padding-top: 5%;
 }
 
-.header ul {
+.header .ulnkContainer {
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
-.header ul li {
+.header .ulnkContainer .liContainer {
   list-style: none;
   margin-left: 5px;
 }
 
-.header ul li a {
+.header .ulnkContainer .liContainer .aContainer {
+  background-color: #343a40;
   text-decoration: none;
   padding: 6px 20px;
   color: #ffffff;
@@ -41,13 +48,7 @@
   font-weight: 500;
 }
 
-.header ul li a:hover {
+.header .ulnkContainer .liContainer .aContainer:hover {
   cursor: pointer;
   background-color: #797979;
-}
-
-.navBar {
-  /* background-color: #e9002f; */
-  position: relative;
-  height: 3rem;
 }

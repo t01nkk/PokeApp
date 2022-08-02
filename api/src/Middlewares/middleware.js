@@ -3,7 +3,7 @@ const axios = require('axios');
 
 
 const getPoke = async () => {
-    const pokemons = await axios('https://pokeapi.co/api/v2/pokemon?offset=0&limit=1000');
+    const pokemons = await axios('https://pokeapi.co/api/v2/pokemon?offset=0&limit=15');
     const mapUrl = await pokemons.data.results.map(e => { return e.url })
     var arrayPokemones = [];
     for (var i = 0; i < mapUrl.length; i++) {
