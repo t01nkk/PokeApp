@@ -19,7 +19,7 @@ import water from '../../resources/elements/water.png';
 import unknown from '../../resources/elements/unknown.png';
 import shadow from '../../resources/elements/shadow.png';
 import ghost from '../../resources/elements/ghost.png';
-import './TypeIcon.css'
+import '../../styles/App.scss'
 
 export default function TypeIcon({ name, handleFilters }) {
     const types = {
@@ -51,11 +51,11 @@ export default function TypeIcon({ name, handleFilters }) {
                     type='image'
                     src={types[name]}
                     alt={`${name}`}
-                    className='type-img'
+                    className='type__image'
                     value={name}
                     onClick={handleFilters ? (e) => { handleFilters(e) } : null}
                 />) :
-                (<img className='type-img' src={types[name]} alt={`${name}`} />)
+                (<img className='type__image' src={types[name]} alt={`${name}`} />)
             }
         </>
     )

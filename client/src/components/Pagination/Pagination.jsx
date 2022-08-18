@@ -1,5 +1,5 @@
 import React from "react";
-import "./styles.css"
+import "../../styles/App.scss"
 
 export const Pagination = ({ pokemonsPerPage, totalPokemons, paginate }) => {
   const pageNumber = [];
@@ -7,11 +7,11 @@ export const Pagination = ({ pokemonsPerPage, totalPokemons, paginate }) => {
     pageNumber.push(i);
   }
   return (
-    <nav className="Nav">
+    <nav className="pagination">
       <div>
         {pageNumber &&
           pageNumber.map((number) => (
-            <button onClick={() => paginate(number)} href="!#" className="button" key={number}>
+            <button onClick={() => paginate(number)} href="!#" className="pagination__button" key={number}>
               {number}
             </button>
           ))}

@@ -3,7 +3,7 @@ import { useHistory } from "react-router-dom";
 import { postPokemon, fetchTypes } from "../../redux/actions/actionTypes";
 import { useDispatch, useSelector } from "react-redux";
 import TypeIcon from "../TypeIcon/TypeIcon";
-import './index.css'
+import '../../styles/App.scss'
 
 export default function Form() {
   const dispatch = useDispatch();
@@ -132,11 +132,11 @@ export default function Form() {
     return errors;
   }
   return (
-    <div className="form-container">
+    <div className="form">
       {/* <p className="form-tittle">Create your pokemon!</p> */}
       <form
         onSubmit={(e) => handleSubmit(e)}
-        className='form-layout' >
+        className='form__layout' >
         <div >
           <input
             className='generic-input'
@@ -260,7 +260,7 @@ export default function Form() {
             <a href={null} onClick={handleClearTypes} >Clear</a>
           </li>
           <li>
-            <button className="realodButton" type="submit" >Create!</button>
+            <button className="form__submit" type="submit" >Create!</button>
           </li>
         </ul>
       </form>

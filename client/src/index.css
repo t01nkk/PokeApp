@@ -1,4 +1,4 @@
-body {
+/* body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
@@ -16,14 +16,14 @@ p.errors {
   color: red;
   font-size: 90%;
   font-weight: 500;
-}
+} */
 
 /* input.errors {
   border: 20px solid red;
 } */
 
-input {
+/* input {
   width: 100%;
   padding: 1vh;
   box-sizing: border-box;
-}
+} */

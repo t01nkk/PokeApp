@@ -1,20 +1,20 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import "./styles.css";
+import "../../styles/App.scss";
 import TypeIcon from "../TypeIcon/TypeIcon";
 
 export default function Card({ id, name, img, types }) {
   return (
     <div className="card">
-      <div className="tittle">
+      <div className="card__tittle">
         <p>{name}</p>
       </div>
-      <div className="imgContainer">
+      <div >
         <Link to={`/pokemons/${id}`}>
-          <img src={img} alt={`${name}`} className="image" />
+          <img src={img} alt={`${name}`} className="card__image" />
         </Link>
       </div>
-      <div className="types">
+      <div className="card__types">
         {types && <TypeIcon name={types[0].name} />}
         {types && types[1] && <TypeIcon name={types[1].name} />}
       </div>

@@ -1,10 +1,8 @@
-.Nav {
-    display: flex;
-    justify-content: center;
-    align-items: flex-end
-}
-
-.button {
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  &__button {
     padding: 5px 10px;
     min-width: 5px;
     height: 40px;
@@ -18,10 +16,10 @@
     border-radius: 5px;
     border: none;
     background-color: #343a40;
-    color: aliceblue
-}
-
-.button:hover {
-    background-color: #c4c4c4;
-    color: #8d7575
+    color: aliceblue;
+    &:hover {
+      background-color: #c4c4c4;
+      color: #8d7575;
+    }
+  }
 }

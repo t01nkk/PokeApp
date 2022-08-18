@@ -1,0 +1,27 @@
+.detail {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 2rem auto;
+  border: rgba(0, 0, 0, 0.5) solid 1px;
+  border-radius: 3%;
+  background-color: black;
+  color: aliceblue;
+  opacity: 0.8;
+  width: 50rem;
+
+  &__data {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    font-weight: 1000;
+    &__name {
+      font-size: 3rem;
+    }
+    &__types {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+    }
+  }
+}

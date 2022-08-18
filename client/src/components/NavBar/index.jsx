@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import style from "./styles.module.css";
+import '../../styles/App.scss'
 import image from "../../resources/pokemonLogo.png";
 import Form from "../Form";
 
@@ -12,14 +12,15 @@ export const Navbar = () => {
 
 
   return (
-    <div className={style.navBar}>
-      <nav className={style.header}>
-        <Link to="/pokemons" className={style.logo}>
-          <img src={image} alt="" />
+    <div className='navbar'>
+      <nav className='navbar__header'>
+        <Link to="/pokemons" >
+          <img className='navbar__header__image' src={image} alt="" />
         </Link>
-        <ul>
-          <li>
+        <ul className="navbar__header__ul">
+          <li className="navbar__header__ul__li">
             <a
+              className="navbar__header__ul__li_a"
               href={null}
               onClick={() => setOpen(!open)}
               onBlur={() => {

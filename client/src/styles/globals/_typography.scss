@@ -1,0 +1,35 @@
+h1,
+h2,
+h3 {
+  font-weight: 700;
+  line-height: 1.1;
+  margin-top: 0;
+}
+
+h1 {
+  //clamp hace lo mismo que calc pero te permite setear
+  //un valor minimo, un maximo y un calculo en el medio
+  //REM: toma el valor ROOT raiz del browser y calcula el tamaño
+  //dependiendo de el valor final del browser
+  // font-size: clamp(30px, 16px + 3vw, 45px);
+  font-size: clamp(1.5rem, 1rem + 3vw, 2.5rem);
+}
+
+h2 {
+  font-size: clamp(1.3rem, 0.8rem + 1.5vw, 2.25rem);
+}
+
+// h1{
+//     font-size: calc(16px + 3vw);
+// }
+
+p {
+  margin-top: 0;
+  font-size: 1rem;
+}
+
+a,
+a:visited,
+a:active {
+  text-decoration: none;
+}
