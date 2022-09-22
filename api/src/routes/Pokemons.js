@@ -1,10 +1,15 @@
 const router = require('express').Router()
-const { Pokemon, Types } = require('../db')
 const { check, query } = require('express-validator');
 const pokemon = require('../controllers/pokemon');
 const validateField = require('../Middlewares/validateField')
 
-router.get('/', pokemon.findAllPokemon);
+router.get('/', [
+  query('name', '').optional().notEmpty().isString(),
+  query('typeFilter', '').optional().notEmpty().isString(),
+  query('order', '').optional().notEmpty().isString(),
+  query('direction', '').optional().notEmpty().isString(),
+  validateField
+], pokemon.findAllPokemon);
 
 //
 router.post('/', [
@@ -57,7 +62,5 @@ router.put('/:id', [
 router.get('/:id', pokemon.getPokemonById);
 
 router.delete('/:id', pokemon.deletePokemon);
-
-router.post('/filter', pokemon.filter);
 
 module.exports = router

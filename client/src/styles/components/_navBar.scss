@@ -2,6 +2,7 @@
   /* background-color: #e9002f; */
   position: relative;
   height: 3rem;
+  
   &__header {
     z-index: 5;
     position: fixed;
@@ -26,8 +27,8 @@
     &__ul {
       display: flex;
       justify-content: center;
-      align-items: center;
       &__li {
+        cursor:pointer;
         list-style: none;
         margin-left: 5px;
         &__a {
@@ -36,11 +37,11 @@
           color: #ffffff;
           border-radius: 5px;
           font-weight: 500;
-          &:hover {
-            cursor: pointer;
-            background-color: #797979;
-          }
         }
+      }
+      &:hover {
+        cursor: pointer;
+        background-color: #797979;
       }
     }
   }

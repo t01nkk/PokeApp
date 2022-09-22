@@ -18,8 +18,8 @@ class PokemonController {
                 })
             }
             let allPoke;
-            if (typeFilter) { //IF FILTER BY TYPE
-                if (order) { //IF FILTER BY TYPE AND ORDER
+            if (typeFilter && typeFilter !== 'default') { //IF FILTER BY TYPE
+                if (order && order !== 'default') { //IF FILTER BY TYPE AND ORDER
                     const filterTypeOrder = await Pokemon.findAll({
                         order: [[`${order}`, direction]],
                         include: {
@@ -58,7 +58,7 @@ class PokemonController {
 
 
             }
-            if (order) { //IF ORDER ONLY
+            if (order && order !== 'default') { //IF ORDER ONLY
                 console.log(req.query)
                 allPoke = await Pokemon.findAll({
                     order: [[`${order}`, direction]],
@@ -254,54 +254,6 @@ class PokemonController {
         }
     }
 
-    async filter(req, res) {
-        try {
-            if (!req.body.filters) {
-                res.status(400).send({
-                    success: false,
-                    message: 'No filters were sent'
-                })
-            }
-            const { filters } = req.body;
-            if (filters.type) {
-                var filterType = await Pokemon.findAll({
-                    include: {
-                        model: Types,
-                        where: { name: filters.type },
-                        attributes: ['name'],
-                    },
-                })
-                if (filters.order) {
-                    filterType.sort((a, b) => {
-                        a[filters.order] - b[filters.order]
-                    })
-                }
-                return res.send({
-                    success: true,
-                    data: filterType
-                })
-            }
-
-            var allPokemon = await Pokemon.findAll({
-                include: {
-                    model: 'Types',
-                    attributes: ['name'],
-                    through: { attributes: [] }
-                }
-            })
-
-            allPokemon.sort((a, b) => {
-                a[filters.order] - b[filters.order]
-            })
-
-        } catch (error) {
-            console.log(error)
-            res.status(400).send({
-                error: true,
-                message: error.message
-            })
-        }
-    }
 }
 
 

@@ -13,47 +13,82 @@ export default function Filters() {
     const allTypes = useSelector((state) => state.types);
     const dispatch = useDispatch();
     const [filter, setFilter] = useState({
-        createdFilter: "default",
         typeFilter: "default",
-        order: 'default'
+        order: 'default',
+        direction: 'ASC'
     });
 
     function handleClick(e) {
         setFilter({
             typeFilter: "default",
-            order: 'default'
+            order: 'default',
+            direction: 'ASC'
         })
         dispatch(fetchPokemons());
     }
 
     function handleFilters(event) {
-
         switch (event.target?.value) {
-            case 'nameUp': {
+            case 'name': {
                 setFilter({
                     ...filter,
-                    order: 'nameUp'
+                    order: 'name'
                 })
                 break;
             };
-            case 'nameDown': {
+            case 'hp': {
                 setFilter({
                     ...filter,
-                    order: "nameDown"
+                    order: "hp"
                 })
                 break;
             };
-            case 'attackUp': {
+            case 'attack': {
                 setFilter({
                     ...filter,
-                    order: "attackUp"
+                    order: "attack"
                 })
                 break;
             };
-            case 'attackDown': {
+            case 'defense': {
                 setFilter({
                     ...filter,
-                    order: "attackDown"
+                    order: "defense"
+                })
+                break;
+            };
+            case 'speed': {
+                setFilter({
+                    ...filter,
+                    order: "speed"
+                })
+                break;
+            };
+            case 'height': {
+                setFilter({
+                    ...filter,
+                    order: "height"
+                })
+                break;
+            };
+            case 'weight': {
+                setFilter({
+                    ...filter,
+                    order: "weight"
+                })
+                break;
+            };
+            case "desc": {
+                setFilter({
+                    ...filter,
+                    direction: "DESC"
+                })
+                break;
+            };
+            case "asc": {
+                setFilter({
+                    ...filter,
+                    direction: "ASC"
                 })
                 break;
             };
@@ -83,13 +118,20 @@ export default function Filters() {
                 })}
             </div>
             <select onChange={(e) => handleFilters(e)} name="Order">
-                <option value="Any" hidden={true}>Order by</option>
-                <option value="nameUp">Order A-Z</option>
-                <option value="nameDown">Order Z-A</option>
-                <option value="attackUp">Attack +</option>
-                <option value="attackDown">Attack -</option>
+                <option value="Any" hidden={true}>Sort By</option>
+                <option value="name">Name</option>
+                <option value="hp">Health</option>
+                <option value="attack">Attack</option>
+                <option value="defense">Defense</option>
+                <option value="speed">Speed</option>
+                <option value="height">Height</option>
+                <option value="weight">Weight</option>
             </select>
-            <button>Find All Hatched</button>
+            <select onChange={(e) => handleFilters(e)} name="Direction">
+                <option value="Any" hidden={true}>AV</option>
+                <option value="asc">Up</option>
+                <option value="desc">Down</option>
+            </select>
             <button
                 className="realodButton"
                 onClick={(e) => {

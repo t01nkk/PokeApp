@@ -7,7 +7,7 @@ export function fetchPokemons() {
             const fetchedPokes = await axios(`${BASE_URL}/pokemon`);
             return dispatch({
                 type: "GET_POKEMONS",
-                payload: fetchedPokes.data
+                payload: fetchedPokes.data.data
             })
         } catch (err) {
             console.log({ msg: err.message })
@@ -35,7 +35,7 @@ export function findByName(name) {
             const pokeName = await axios(`${BASE_URL}/pokemon?name=${name}`)
             return dispatch({
                 type: "FIND_BY_NAME",
-                payload: pokeName.data
+                payload: pokeName.data.data
             })
         } catch (err) {
             console.log({ msg: err.message })
@@ -45,7 +45,7 @@ export function findByName(name) {
 
 export function postPokemon(payload) {
     return async function (dispatch) {
-        const response = await axios.post(`${BASE_URL}/pokemon/create`, payload);
+        const response = await axios.post(`${BASE_URL}/pokemon`, payload);
         return dispatch({
             type: "CREATE_POKEMON",
             response
@@ -58,75 +58,22 @@ export function fetchDetails(id) {
         const details = await axios(`${BASE_URL}/pokemon/${id}`);
         return dispatch({
             type: "GET_DETAILS",
-            payload: details.data
+            payload: details.data.data
         })
-    }
-}
-
-
-export function filterByCreated(payload) {
-    return {
-        type: "FILTER_BY_CREATED",
-        payload
     }
 }
 
 export function filterPokemons(payload) {
+    console.log(payload)
     return async function (dispatch) {
-        const filters = await axios.get(`${BASE_URL}/pokemon?typeFilter=${payload.typeFilter}&order=${payload.order}`)
+        const filters = await axios.get(`${BASE_URL}/pokemon?typeFilter=${payload.typeFilter}&order=${payload.order}&direction=${payload.direction}`)
 
         return dispatch({
             type: "FILTERS",
-            payload: filters.data
+            payload: filters.data.data
         })
     }
 }
-
-
-
-// export function filterPokemonsByType(payload) {
-//     return async function (dispatch) {
-//         const filters = await axios(`${BASE_URL}/pokemon?type=${payload}`)
-//         // let query = `?type=${type}&attackUp=${attackUp}&attackDown=${attackDown}&nameUp=${nameUp}&nameDown=${nameDown}`
-//         // const filters = await axios(`${BASE_URL}/pokemon${query}`)
-//         return dispatch({
-//             type: "FILTER_BY_TYPE",
-//             payload: filters.data
-//         })
-//     }
-// }
-
-// export function orderPokemon(payload) {
-//     return async function (dispatch) {
-//         const order = await axios(`${BASE_URL}/pokemon?${payload}=true`);
-//         // let query = `?type=${type}&attackUp=${attackUp}&attackDown=${attackDown}&nameUp=${nameUp}&nameDown=${nameDown}`
-//         // const filters = await axios(`${BASE_URL}/pokemon${query}`)
-//         return dispatch({
-//             type: "ORDER",
-//             payload: order.data
-//         })
-//     }
-// }
-
-// export function filterPokemonsByType(payload) {
-//     return {
-//         type: "FILTER_TYPE",
-//         payload
-//     }
-// }
-// export function OrderingByName(payload) {
-//     return {
-//         type: 'ORDER_NAME',
-//         payload
-//     }
-// }
-
-// export function OrderingByAttack(payload) {
-//     return {
-//         type: 'ORDER_ATTACK',
-//         payload
-//     }
-// }
 
 
 

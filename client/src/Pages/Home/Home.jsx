@@ -45,7 +45,7 @@ export default function Home() {
             <Pagination
                 key={allPokes.id}
                 pokemonsPerPage={pokemonsPerPage}
-                totalPokemons={allPokes.length}
+                totalPokemons={allPokes?.length}
                 paginate={paginate}
             />
             <div className="home__cards">
