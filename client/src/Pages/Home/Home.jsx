@@ -18,8 +18,8 @@ export default function Home() {
     const [currentPage, setCurrentPage] = useState(1);
     const [pokemonsPerPage] = useState(50);
     const indexOfLastPokemon = currentPage * pokemonsPerPage;
+    const lastPage = Math.ceil(allPokes.length / pokemonsPerPage)
     const indexOfFirstPokemon = indexOfLastPokemon - pokemonsPerPage;
-
 
     useEffect(() => {
         //POKEMONS
@@ -44,8 +44,8 @@ export default function Home() {
             <Filters />
             <Pagination
                 key={allPokes.id}
-                pokemonsPerPage={pokemonsPerPage}
-                totalPokemons={allPokes?.length}
+                currentPage={currentPage}
+                lastPage={lastPage}
                 paginate={paginate}
             />
             <div className="home__cards">
@@ -67,14 +67,7 @@ export default function Home() {
                     </div>
                 }
             </div>
-            <div>
-                <Pagination
-                    key={allPokes.id}
-                    pokemonsPerPage={pokemonsPerPage}
-                    totalPokemons={allPokes.length}
-                    paginate={paginate}
-                />
-            </div>
+
 
 
 

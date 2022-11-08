@@ -22,4 +22,20 @@
       color: #8d7575;
     }
   }
+  &__disable{
+    padding: 5px 10px;
+    min-width: 5px;
+    height: 40px;
+    color: #fff;
+    padding: 5px 10px;
+    font-weight: bold;
+    cursor:default ;
+    transition: all 0.3s ease;
+    display: inline-block;
+    outline: none;
+    border-radius: 5px;
+    border: none;
+    background-color: var(--button--background--color--disabled);
+    color: aliceblue;
+  }
 }

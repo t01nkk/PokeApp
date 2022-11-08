@@ -64,7 +64,6 @@ export function fetchDetails(id) {
 }
 
 export function filterPokemons(payload) {
-    console.log(payload)
     return async function (dispatch) {
         const filters = await axios.get(`${BASE_URL}/pokemon?typeFilter=${payload.typeFilter}&order=${payload.order}&direction=${payload.direction}`)
 

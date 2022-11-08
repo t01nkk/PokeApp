@@ -20,12 +20,12 @@ export default function Details(props) {
       <div className="detail__data">
         <p className="detail__data__name" >{pokemon.name?.toUpperCase()}</p>
         <p >ID: {pokemon.idPoke ? pokemon.idPoke : pokemon.id}</p>
-        <p>Health Points {pokemon.hp}</p>
-        <p>Attack Points{pokemon.attack}</p>
-        <p>Defense Points {pokemon.defense}</p>
-        <p>Speed Points {pokemon.speed}</p>
-        <p>Height {pokemon.height}</p>
-        <p>Weight {pokemon.weight}</p>
+        <p>Health Points: {pokemon.hp}</p>
+        <p>Attack Points:{pokemon.attack}</p>
+        <p>Defense Points: {pokemon.defense}</p>
+        <p>Speed Points: {pokemon.speed}</p>
+        <p>Height: {pokemon.height}</p>
+        <p>Weight: {pokemon.weight}</p>
         <div className="detail__data__types">
           {pokemon.types && <TypeIcon name={pokemon.types[0].name} />}
           {pokemon.types && pokemon.types[1] && <TypeIcon name={pokemon.types[1].name} />}

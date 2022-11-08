@@ -31,7 +31,7 @@ export default function Form() {
       let err = Object.values(errors)
       return alert(message = err.map(e => e + '\n'))
     } else {
-      const { name, hp, attack, defense, speed, image, height, weight, types } = input;
+      const { name, hp, attack, defense, speed, height, weight, types } = input;
       if (name && hp && attack && defense && speed && height && weight && types.length !== 0) {
         dispatch(postPokemon(input));
 

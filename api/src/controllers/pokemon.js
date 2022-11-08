@@ -97,7 +97,7 @@ class PokemonController {
     async createPokemon(req, res) {
         try {
             const { name, hp, attack, defense, speed, height, weight, image, types } = req.body
-
+            console.log(image)
             let arrType = []
             if (!types?.length) {
                 return res.status(400).json({

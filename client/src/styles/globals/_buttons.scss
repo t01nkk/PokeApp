@@ -1,0 +1,17 @@
+button{
+    appearance: none;
+    border: none;
+    outline: none;
+    color:var(--text--color);
+    background-color:var(--button--background--color);
+    padding: 1rem;
+    cursor: pointer;
+    // max-height: 2rem;
+    width: fit-content;
+    border-radius: 10px;
+    transition: 0.4s;
+    &:hover{
+        // opacity: 0.8%;
+        background-color: var(--button--background--color--hover);
+    }
+}

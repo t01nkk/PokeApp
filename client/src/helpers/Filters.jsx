@@ -29,6 +29,7 @@ export default function Filters() {
 
     function handleFilters(event) {
         switch (event.target?.value) {
+            // eslint-disable-next-line no-lone-blocks
             case 'name': {
                 setFilter({
                     ...filter,
@@ -36,6 +37,7 @@ export default function Filters() {
                 })
                 break;
             };
+            // eslint-disable-next-line no-lone-blocks
             case 'hp': {
                 setFilter({
                     ...filter,
@@ -43,6 +45,7 @@ export default function Filters() {
                 })
                 break;
             };
+            // eslint-disable-next-line no-lone-blocks
             case 'attack': {
                 setFilter({
                     ...filter,
@@ -50,6 +53,7 @@ export default function Filters() {
                 })
                 break;
             };
+            // eslint-disable-next-line no-lone-blocks
             case 'defense': {
                 setFilter({
                     ...filter,
@@ -57,6 +61,7 @@ export default function Filters() {
                 })
                 break;
             };
+            // eslint-disable-next-line no-lone-blocks
             case 'speed': {
                 setFilter({
                     ...filter,
@@ -64,6 +69,7 @@ export default function Filters() {
                 })
                 break;
             };
+            // eslint-disable-next-line no-lone-blocks
             case 'height': {
                 setFilter({
                     ...filter,
@@ -71,6 +77,7 @@ export default function Filters() {
                 })
                 break;
             };
+            // eslint-disable-next-line no-lone-blocks
             case 'weight': {
                 setFilter({
                     ...filter,
@@ -78,6 +85,7 @@ export default function Filters() {
                 })
                 break;
             };
+            // eslint-disable-next-line no-lone-blocks
             case "desc": {
                 setFilter({
                     ...filter,
@@ -85,6 +93,7 @@ export default function Filters() {
                 })
                 break;
             };
+            // eslint-disable-next-line no-lone-blocks
             case "asc": {
                 setFilter({
                     ...filter,
@@ -110,37 +119,39 @@ export default function Filters() {
 
     return (
         <div className="filter">
-            <div className='filter__types' >
+            <div className='filters__types' >
                 {allTypes.map((type) => {
                     return (
                         <TypeIcon key={type.id} name={type.name} handleFilters={handleFilters} />
                     )
                 })}
             </div>
-            <select onChange={(e) => handleFilters(e)} name="Order">
-                <option value="Any" hidden={true}>Sort By</option>
-                <option value="name">Name</option>
-                <option value="hp">Health</option>
-                <option value="attack">Attack</option>
-                <option value="defense">Defense</option>
-                <option value="speed">Speed</option>
-                <option value="height">Height</option>
-                <option value="weight">Weight</option>
-            </select>
-            <select onChange={(e) => handleFilters(e)} name="Direction">
-                <option value="Any" hidden={true}>AV</option>
-                <option value="asc">Up</option>
-                <option value="desc">Down</option>
-            </select>
-            <button
-                className="realodButton"
-                onClick={(e) => {
-                    handleClick(e);
-                }}
-            >
-                Reload Pokemons
-            </button>
-            <SearchBar />
+            <div className='filters__select'>
+                <select onChange={(e) => handleFilters(e)} name="Order" className='filter__select_order'>
+                    <option value="Any" hidden={true}>Sort By</option>
+                    <option value="name">Name</option>
+                    <option value="hp">Health</option>
+                    <option value="attack">Attack</option>
+                    <option value="defense">Defense</option>
+                    <option value="speed">Speed</option>
+                    <option value="height">Height</option>
+                    <option value="weight">Weight</option>
+                </select>
+                <select onChange={(e) => handleFilters(e)} name="Direction" className='filter__select_order'>
+                    <option value="Any" hidden={true}>AV</option>
+                    <option value="asc">Up</option>
+                    <option value="desc">Down</option>
+                </select>
+                <button
+                    className="realodButton"
+                    onClick={(e) => {
+                        handleClick(e);
+                    }}
+                >
+                    Reload Pokemons
+                </button>
+                <SearchBar />
+            </div>
         </div>
     )
 }
